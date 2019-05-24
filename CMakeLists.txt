@@ -11,11 +11,16 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib )
 
 set(CMAKE_BUILD_TYPE Release)
 
+#new:
+find_package (Eigen3 3.3 REQUIRED)
+include_directories(/usr/include/eigen3/)
+#end
+
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(CMAKE_CXX_FLAGS "-O3 -std=c++11") ## Optimize
 #    set(CMAKE_EXE_LINKER_FLAGS "-s -lrt") ## Strip binary
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-    set(CMAKE_CXX_FLAGS "-O3 -march=native -std=c++11") ## Optimize
+    set(CMAKE_CXX_FLAGS "-O3 -march=native -std=c++11 -I /usr/include/eigen3/") ## Optimize
     set(CMAKE_EXE_LINKER_FLAGS "-s") ## Strip binary
 endif()
 

@@ -67,5 +67,9 @@ typedef std::set<coord_type> dset;
 typedef dset::iterator dset_iter;
 typedef dset::const_iterator dset_citer;
 
+
+typedef dvect FG;//store the gradient of one function.
+typedef std::vector<dvect>vect_FG;
+
 #endif // BASIC_STRUCTURE
 

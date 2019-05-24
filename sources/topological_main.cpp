@@ -137,7 +137,21 @@ template<class M> void VT_ALL(M& mesh)
     cerr << "[MEMORY] peak for extracting the VT relations: " <<
             to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " Mbs" << std::endl;
 
+     time.start();
+    for(int vid=0; vid<mesh.get_vertices_num(); vid++)
+    {
+        ivect ret = mesh.VV(vid);
+        ret.clear();
+    }
+    time.stop();
+    time.print_elapsed_time("[TIME] batched VV extraction: ");
+
+    cerr << "[MEMORY] peak for extracting the VV relations: " <<
+            to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " Mbs" << std::endl;
+
+    
     return;
+    
 }
 
 #endif // TOPOLOGICAL_MAIN_H

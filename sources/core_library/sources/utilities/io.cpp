@@ -141,7 +141,7 @@ bool IO::read_mesh_tri(Spatial_Mesh& mesh, string path)
 
 void IO::read_vertices_list(Spatial_Mesh &mesh, ifstream &input, itype num_vertices)
 {
-    bool is2D = false;
+    bool is2D = false, isMulti=false;
     string line;
     //legge i vertici aggiustando il dominio..
     for (itype i = 0; i < num_vertices; i++)
@@ -160,6 +160,16 @@ void IO::read_vertices_list(Spatial_Mesh &mesh, ifstream &input, itype num_verti
             v = Vertex(atof(line_tokens[0].c_str()),atof(line_tokens[1].c_str()));
             is2D = true;
         }
+        else if(line_tokens.size() > 3) // MULTIFIELD
+        {
+            isMulti=true;
+            dvect fields;
+
+            for(int f=2; f<line_tokens.size(); f++)
+                fields.push_back(atof(line_tokens[f].c_str()));
+
+            v = Vertex(atof(line_tokens[0].c_str()),atof(line_tokens[1].c_str()),fields);
+        }
         mesh.add_vertex(v);
     }
 
@@ -167,6 +177,10 @@ void IO::read_vertices_list(Spatial_Mesh &mesh, ifstream &input, itype num_verti
         cerr<<"[NOTA] The points are embedded in a 2D space."<<endl;
     else
         cerr<<"[NOTA] The points are embedded in a 3D space."<<endl;
+    
+    if(isMulti)
+        cerr<<"[NOTA] The points have multiple fields."<<endl;
+    
 }
 
 bool IO::write_mesh_connectivity(Spatial_Mesh& mesh, string path)

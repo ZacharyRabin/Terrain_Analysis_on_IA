@@ -32,6 +32,8 @@
 #include "curvature/concentrated_curvature.h"
 #include "curvature/c_curvature.h"
 
+#include "roughness/Roughness.h"
+
 #include "terrain_features/critical_points_extractor.h"
 #include "terrain_features/slope_extractor.h"
 
@@ -42,6 +44,7 @@
 #include "utilities/usage.h"
 #include "utilities/io.h"
 #include "utilities/timer.h"
+#include "gradient/Gradient.h"
 
 using namespace std;
 using namespace string_management;
@@ -52,6 +55,9 @@ using namespace string_management;
 
 void print_help();
 void print_paragraph(string stringa, int cols);
+
+
+
 
 int main(int argc, char *argv[])
 {
@@ -163,6 +169,49 @@ int main(int argc, char *argv[])
                 to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
         cpe.print_stats();
     }
+    else if(strcmp(argv[1],"rough")==0)
+    {
+        Roughness roughness(mesh);
+        time.start();
+        roughness.compute_values(mesh);
+        time.stop();
+        time.print_elapsed_time("[TIME] Computing Roughness: ");
+        cerr << "[MEMORY] peak for computing roughness: " <<
+                to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
+        roughness.print_stats(mesh);
+
+    }
+    else if(strcmp(argv[1],"gradient")==0)
+    {
+       
+        Roughness roughness(mesh);// Note: Here the memory usage during roughness computation is also included. 
+         time.start();
+        roughness.compute_values(mesh);
+        time.stop();
+        time.print_elapsed_time("[TIME] Computing Roughness: ");
+          cerr << "[MEMORY] peak for computing roughness: " <<
+                to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
+          
+        roughness.print_stats(mesh);
+        roughness.store_result(mesh);
+
+
+        int factor=100;
+        cerr<<"number of fields: "<<mesh.get_vertex(10).get_fields_num()<<endl;
+          
+
+        Gradient multi("All");
+         time.start();
+        multi.compute_field_stats(mesh,factor);
+        multi.multi_field(mesh);
+        time.stop();
+        time.print_elapsed_time("[TIME] Computing Multi field: ");
+        
+        multi.print_stats(mesh);
+        cerr << "[MEMORY] peak for computing Multi field measure: " <<
+        to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
+        
+    }
     else if(strcmp(argv[1],"save")==0)
     {
         cout<<"[NOTA] Saving mesh connectivity."<<endl;
@@ -248,6 +297,5 @@ void print_paragraph(string stringa, int cols){
         printf("\n");
     }
 }
-
 
 
