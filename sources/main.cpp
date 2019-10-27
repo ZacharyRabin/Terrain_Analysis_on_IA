@@ -45,6 +45,8 @@
 #include "utilities/io.h"
 #include "utilities/timer.h"
 #include "gradient/Gradient.h"
+#include "morse/formangradientvector.h"
+#include "morse/WatershedAlgs/simulatedimmersion.h"
 
 using namespace std;
 using namespace string_management;
@@ -194,7 +196,7 @@ int main(int argc, char *argv[])
           
         roughness.print_stats(mesh);
         roughness.store_result(mesh);
-
+        
 
         int factor=100;
         cerr<<"number of fields: "<<mesh.get_vertex(10).get_fields_num()<<endl;
@@ -206,7 +208,7 @@ int main(int argc, char *argv[])
         multi.multi_field(mesh);
         time.stop();
         time.print_elapsed_time("[TIME] Computing Multi field: ");
-        
+        multi.print_time();
         multi.print_stats(mesh);
         cerr << "[MEMORY] peak for computing Multi field measure: " <<
         to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;

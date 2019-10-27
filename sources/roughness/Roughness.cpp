@@ -22,7 +22,6 @@ void Roughness::compute_values(Spatial_Mesh& mesh)
     {
         roughness[i]=compute(i,mesh); 
     }
-        cout<<"Overall time:"<<time_for_compute<<endl;
 }
 
 
@@ -33,13 +32,11 @@ coord_type Roughness::compute(itype vid, Spatial_Mesh &mesh){
     coord_type zSum=0.0;
     coord_type rough=0;
 
-
     ivect vv = mesh.VV(vid);
-
+               
     //t==-1 cannot happen if the mesh has no isolated vertices
     if (vv.size() == 0) return 0.0;
-    Timer time;
-    time.start();
+
     for(auto v1_id:vv)
     {
 
@@ -55,8 +52,7 @@ coord_type Roughness::compute(itype vid, Spatial_Mesh &mesh){
     
     }
     rough=sqrt(zDistSum/vv.size());
-    time.stop();
-    time_for_compute+=time.get_elapsed_time_in_sec();
+ 
 
     return rough;
 

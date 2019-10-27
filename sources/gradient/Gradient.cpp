@@ -34,6 +34,7 @@ dvect Gradient::PCE_compute(itype tid, Spatial_Mesh &mesh, int field_index){
     // compute the area of the triangle 
     area=abs(0.5*(ki[0]*ij[1]-ki[1]*ij[0]));
     int field_pos=fields[field_index];
+    
     dvect area_multiply_ki={(vj.get_field(field_pos)-vi.get_field(field_pos))*ki_vert[0]/(2*area),(vj.get_field(field_pos)-vi.get_field(field_pos))*ki_vert[1]/(2*area)};
     dvect area_multiply_ij={(vk.get_field(field_pos)-vi.get_field(field_pos))*ij_vert[0]/(2*area),(vk.get_field(field_pos)-vi.get_field(field_pos))*ij_vert[1]/(2*area)};
     
@@ -58,8 +59,11 @@ void Gradient::multi_field(Spatial_Mesh& mesh){
 FG Gradient::vertex_compute(itype vid, Spatial_Mesh& mesh, int field_index){
 
         bool is_border=false;
+                    Timer time;
+            time.start();
         ivect vt = mesh.VT(vid,is_border);
-        
+                time.stop();
+            block_time+=time.get_elapsed_time();
         coord_type sum_area=0.0;
         dvect sum_gradient={0,0};
         dvect gradient_v={0,0};
@@ -71,10 +75,9 @@ FG Gradient::vertex_compute(itype vid, Spatial_Mesh& mesh, int field_index){
             Triangle &t=mesh.get_triangle(tid);
             Vertex &vq=(t.TV(0)!=vid)?mesh.get_vertex(t.TV(0)):mesh.get_vertex(t.TV(1));
             Vertex &vr=((t.TV(1)!=vid)&&(t.TV(0)!=vid))?mesh.get_vertex(t.TV(1)):mesh.get_vertex(t.TV(2));
-            
-  
+
             gradient_t=this->PCE_compute(tid,mesh,field_index);
-            
+
             dvect qp={vq.get_c(0)-vp.get_c(0),vq.get_c(1)-vp.get_c(1)};
             dvect qr={vq.get_c(0)-vr.get_c(0),vq.get_c(1)-vr.get_c(1)};
             dvect rp={vr.get_c(0)-vp.get_c(0),vr.get_c(1)-vp.get_c(1)};            
@@ -102,9 +105,7 @@ FG Gradient::vertex_compute(itype vid, Spatial_Mesh& mesh, int field_index){
         }
         gradient_v[0]=sum_gradient[0]/sum_area;
         gradient_v[1]=sum_gradient[1]/sum_area;
-  //  cout<<"gradient of vertex: "<<gradient_v[0]<<","<<gradient_v[1]<<endl;
-                
-       // coord_type gradient_v=0;
+
 
         
         FG gradient;
@@ -117,11 +118,13 @@ FG Gradient::vertex_compute(itype vid, Spatial_Mesh& mesh, int field_index){
 coord_type Gradient::multifield_compute(itype vid,Spatial_Mesh &mesh){
 
       vect_FG FG_matrix;
+                  
+
       for(int i=0;i<fields.size();i++){
           FG_matrix.push_back(vertex_compute(vid,mesh,i));
       }
     
-    
+        
     
       itype field_num=FG_matrix.size();
         MatrixX2d gradientMatrix(field_num,2);

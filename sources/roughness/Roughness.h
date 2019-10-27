@@ -20,7 +20,7 @@
 
 class Roughness {
 public:
-    Roughness(Spatial_Mesh &mesh){      roughness.assign(mesh.get_vertices_num(),0);time_for_compute=0;};
+    Roughness(Spatial_Mesh &mesh){      roughness.assign(mesh.get_vertices_num(),0);time_for_compute=0;time_for_relation=0;};
 
     void compute_values(Spatial_Mesh &mesh);
     void print_stats(Spatial_Mesh &mesh);
@@ -30,6 +30,7 @@ private:
      dvect roughness;
 
          double time_for_compute;
+         double time_for_relation;
 };
 
 #endif /* ROUGHNESS_H */

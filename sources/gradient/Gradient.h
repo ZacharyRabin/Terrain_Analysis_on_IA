@@ -22,6 +22,7 @@
 #include <Eigen/Eigenvalues>
 #include <complex>
 #include <limits>
+#include "utilities/timer.h"
 
 using namespace Eigen;
 
@@ -41,6 +42,7 @@ public:
         fields.push_back(2);
         fields.push_back(3);
         fields.push_back(4);
+        block_time=0;
        }
        else if (mode=="rRGB")
        {
@@ -57,6 +59,11 @@ public:
     void vertex_gradient(Spatial_Mesh& mesh, int field_index);
     
     void multi_field(Spatial_Mesh& mesh);
+    void print_time(){
+        cout<<"The time of this block is:"<<block_time<<endl;
+        
+    }
+    
     
      inline void compute_field_stats(Spatial_Mesh &mesh,int factor)
     {
@@ -100,7 +107,7 @@ private:
     dvect PCE_compute(itype tid, Spatial_Mesh &mesh, int field_index);
     FG vertex_compute(itype vid,Spatial_Mesh &mesh, int field_index);
     coord_type multifield_compute(itype vid, Spatial_Mesh &mesh);
-    
+    coord_type block_time;
     
     
     coord_type cross_2d(dvect i,dvect j);

@@ -65,11 +65,12 @@ template<class M> void ALL(M& mesh)
     for(int vid=0; vid<mesh.get_vertices_num(); vid++)
     {
         ivect ret = mesh.VV(vid);
-        ret.clear();
+       // ret.clear();
     }
     time.stop();
     time.print_elapsed_time("[TIME] batched VV extraction: ");
 
+    
     cerr << "[MEMORY] peak for extracting the VV relations: " <<
             to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " Mbs" << std::endl;
 
