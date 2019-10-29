@@ -4,11 +4,11 @@
 
 #include <climits>
 
-FormanGradientVector::FormanGradientVector(Mesh* mesh)
+FormanGradientVector::FormanGradientVector(Spatial_Mesh* mesh)
 {
     this->mesh = mesh;
 
-    forman_gradient = vector<unsigned int>(mesh->getTopSimplexesNum(), NON_VALID_CONF);
+    forman_gradient = vector<unsigned int>(mesh->get_triangles_num(), NON_VALID_CONF);
     unsigned int tetCaseCountOuterAllowed=0;
     unsigned int tot_case=0;
 
@@ -69,12 +69,13 @@ unsigned int FormanGradientVector::convert_expand_to_compressed(Arrows ga){
 
 void FormanGradientVector::setVE(int v, int v2){
 
-    vector<int> et = mesh->ET(Edge(v,v2));
+    Edge edg=Edge(v,v2);
+    vector<int> et = mesh->ET(edg);
 
-    mesh->getVertex(v).VTstar(et[0]);
+    mesh->get_vertex(v).set_VTstar(et[0]);
     for(unsigned int i=0; i<et.size(); i++){
         TriGradient ga = convert_compressed_to_expand(forman_gradient[et[i]]);
-        ga.setVE(mesh->getTopSimplex(et[i]).vertex_index(v), mesh->getTopSimplex(et[i]).vertex_index(v2));
+        ga.setVE(mesh->get_triangle(et[i]).vertex_index(v), mesh->get_triangle(et[i]).vertex_index(v2));
         forman_gradient[et[i]] = convert_expand_to_compressed(ga.getArrow());
     }
 
@@ -83,17 +84,17 @@ void FormanGradientVector::setVE(int v, int v2){
 void FormanGradientVector::setEF(int v, int f){
 
     TriGradient ga = convert_compressed_to_expand(forman_gradient[f]);
-    ga.setEF(mesh->getTopSimplex(f).vertex_index(v));
+    ga.setEF(mesh->get_triangle(f).vertex_index(v));
     forman_gradient[f] = convert_expand_to_compressed(ga.getArrow());
 }
 
 Edge* FormanGradientVector::getVE(int v){
 
-    int t = mesh->getVertex(v).VTstar();
-    int v2 = convert_compressed_to_expand(forman_gradient[t]).get_vertex_pair(mesh->getTopSimplex(t).vertex_index(v));
+    int t = mesh->get_vertex(v).get_VTstar();
+    int v2 = convert_compressed_to_expand(forman_gradient[t]).get_vertex_pair(mesh->get_triangle(t).vertex_index(v));
 
     if(v2 != -1){
-        return new Edge(v, mesh->getTopSimplex(t).TV(v2));
+        return new Edge(v, mesh->get_triangle(t).TV(v2));
     }
 
     return NULL;
@@ -103,7 +104,7 @@ int FormanGradientVector::getEF(Edge* e){
 
     vector<int> et = mesh->ET(*e);
     for(int i=0; i<et.size(); i++){
-        int t = convert_compressed_to_expand(forman_gradient[et[i]]).get_edge_pair(mesh->getTopSimplex(et[i]).vertex_index(e->EV(0)),mesh->getTopSimplex(et[i]).vertex_index(e->EV(1)));
+        int t = convert_compressed_to_expand(forman_gradient[et[i]]).get_edge_pair(mesh->get_triangle(et[i]).vertex_index(e->EV(0)),mesh->get_triangle(et[i]).vertex_index(e->EV(1)));
         if(t == 3) return et[i];
     }
 
@@ -117,37 +118,38 @@ int FormanGradientVector::getFE(int tri){
 
 
 void FormanGradientVector::freeVE(int v1, int v2){
-    vector<int> et = mesh->ET(Edge(v1,v2));
+    Edge edge=Edge(v1,v2);
+    vector<int> et = mesh->ET(edge);
     for(unsigned int i=0; i<et.size(); i++){
         TriGradient ga = convert_compressed_to_expand(forman_gradient[et[i]]);
-        ga.clearVE(mesh->getTopSimplex(et[i]).vertex_index(v1), mesh->getTopSimplex(et[i]).vertex_index(v2));
+        ga.clearVE(mesh->get_triangle(et[i]).vertex_index(v1), mesh->get_triangle(et[i]).vertex_index(v2));
         forman_gradient[et[i]] = convert_expand_to_compressed(ga.getArrow());
     }
 }
 
 void FormanGradientVector::freeEF(int v, int f){
     TriGradient ga = convert_compressed_to_expand(forman_gradient[f]);
-    ga.clearEF(mesh->getTopSimplex(f).vertex_index(v));
+    ga.clearEF(mesh->get_triangle(f).vertex_index(v));
     forman_gradient[f] = convert_expand_to_compressed(ga.getArrow());
 }
 
 bool FormanGradientVector::is_vertex_critical(int v){
-    return convert_compressed_to_expand(forman_gradient[mesh->getVertex(v).VTstar()]).is_vertex_unpaired(mesh->getTopSimplex(mesh->getVertex(v).VTstar()).vertex_index(v));
+    return convert_compressed_to_expand(forman_gradient[mesh->get_vertex(v).get_VTstar()]).is_vertex_unpaired(mesh->get_triangle(mesh->get_vertex(v).get_VTstar()).vertex_index(v));
 }
 
 bool FormanGradientVector::is_edge_critical(int v1, int v2){
 
-    int t1 = mesh->getVertex(v1).VTstar();
-    int t2 = mesh->getVertex(v2).VTstar();
+    int t1 = mesh->get_vertex(v1).get_VTstar();
+    int t2 = mesh->get_vertex(v2).get_VTstar();
 
-    if((mesh->getTopSimplex(t1).contains(v2) && !(convert_compressed_to_expand(forman_gradient[t1]).is_edge_unpaired(mesh->getTopSimplex(t1).vertex_index(v1),mesh->getTopSimplex(t1).vertex_index(v2)))) ||
-       (mesh->getTopSimplex(t2).contains(v1) && !(convert_compressed_to_expand(forman_gradient[t2]).is_edge_unpaired(mesh->getTopSimplex(t2).vertex_index(v2),mesh->getTopSimplex(t2).vertex_index(v1))))) {
+    if((mesh->get_triangle(t1).has_vertex(v2) && !(convert_compressed_to_expand(forman_gradient[t1]).is_edge_unpaired(mesh->get_triangle(t1).vertex_index(v1),mesh->get_triangle(t1).vertex_index(v2)))) ||
+       (mesh->get_triangle(t2).has_vertex(v1) && !(convert_compressed_to_expand(forman_gradient[t2]).is_edge_unpaired(mesh->get_triangle(t2).vertex_index(v2),mesh->get_triangle(t2).vertex_index(v1))))) {
         return false;
     }
-
-    vector<int> et = mesh->ET(Edge(v1,v2));
+    Edge edge=Edge(v1,v2);
+    vector<int> et = mesh->ET(edge);
     for(unsigned int i=0; i<et.size(); i++){
-        if(!(convert_compressed_to_expand(forman_gradient[et[i]]).is_edge_unpaired(mesh->getTopSimplex(et[i]).vertex_index(v1),mesh->getTopSimplex(et[i]).vertex_index(v2))))
+        if(!(convert_compressed_to_expand(forman_gradient[et[i]]).is_edge_unpaired(mesh->get_triangle(et[i]).vertex_index(v1),mesh->get_triangle(et[i]).vertex_index(v2))))
             return false;
     }
 

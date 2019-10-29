@@ -1,19 +1,24 @@
 #ifndef FORMANGRADIENTVECTOR_H
 #define FORMANGRADIENTVECTOR_H
 
-#include "../LibMesh/Reader.h"
+//#include "../LibMesh/Reader.h"
 #include "forman_arrow.h"
 #include "aux_forman_gradient_vector.h"
 #include <map>
 #include <set>
 #include <list>
 #include "assert.h"
-
-#include "../LibMesh/Mesh.h"
+#include "ia/mesh.h"
+#include "ia/vertex.h"
+#include "ia/triangle.h"
+#include "utilities/timer.h"
+#include "utilities/usage.h"
+/*#include "../LibMesh/Mesh.h"
 #include "../LibMesh/Vertex3D.h"
 
 #include "../Performances/Timer.h"
 #include "../Performances/Usage.h"
+*/
 
 #define NON_VALID_CONF 1000
 
@@ -72,7 +77,7 @@ class FormanGradientVector
 {
 
     //the triangle mesh
-    Mesh* mesh;
+    Spatial_Mesh* mesh;
 
     //compact representation for the Forman gradient
     vector<unsigned int> forman_gradient;
@@ -86,13 +91,13 @@ class FormanGradientVector
 public:
 
     ///constructor
-    FormanGradientVector(Mesh* mesh);
+    FormanGradientVector(Spatial_Mesh* mesh);
 
     ///Functions for computing the gradient vector field
         //initialize the forman gradient by homotopy expansion
     void homotopy_expansion();
         //initialize the forman gradient by using a watershed segmentation
-    void watershedToForman(vector<int>&);
+   // void watershedToForman(vector<int>&);
 
 
 
@@ -160,7 +165,7 @@ public:
     void writeVTK_2cells_on_vert(char* nome_file_output, vector<int> const& triangles);
 
         //write the ascending 1-cells
-    void writeVTK_1cells(char* file_name, set<pair<Vertex3D,Vertex3D> > const& edges);
+    void writeVTK_1cells(char* file_name, set<pair<Vertex,Vertex> > const& edges);
 
         //write the Forman gradient
     void writeVTK_gradient(char* nomeFile);
@@ -187,8 +192,8 @@ private:
 
     //translate a triangle (represented as the triple of vertices) into its index
     inline int vector_to_index(vector<int> simplex){
-
-        vector<int> vt = mesh->VT(simplex.front());
+        bool is_border=false;
+        vector<int> vt = mesh->VT(simplex.front(),is_border);
         for(unsigned int i=0; i<vt.size(); i++){
 
             int t = vt.at(i);
@@ -198,7 +203,7 @@ private:
 
                 int find = simplex.at(j);
                 for(int k=0; k<3; k++){
-                    if(find == mesh->getTopSimplex(t).TV(k)){
+                    if(find == mesh->get_triangle(t).TV(k)){
                         founded++;
                         break;
                     }
@@ -221,7 +226,7 @@ private:
             else{
                 list<int>::iterator it = ordered.begin();
                 for(; it!=ordered.end(); it++){
-                    if(mesh->getVertex(simplex->at(i)).getF() > mesh->getVertex(*it).getF())
+                    if(mesh->get_vertex(simplex->at(i)).get_c(2) > mesh->get_vertex(*it).get_c(2))
                         break;
                 }
 
@@ -242,11 +247,11 @@ private:
 
         int similar_pair=-1;
         for(int i=1; i<simplex1.size(); i++){
-            if(mesh->getVertex(simplex1.at(i)).getF() == mesh->getVertex(simplex2.at(i)).getF()){
+            if(mesh->get_vertex(simplex1.at(i)).get_c(2) == mesh->get_vertex(simplex2.at(i)).get_c(2)){
                     if(simplex1[i]!=simplex2[i])similar_pair=i;
                     continue;
             }
-            else if(mesh->getVertex(simplex1.at(i)).getF() > mesh->getVertex(simplex2.at(i)).getF()) return false;
+            else if(mesh->get_vertex(simplex1.at(i)).get_c(2) > mesh->get_vertex(simplex2.at(i)).get_c(2)) return false;
             else return true;
         }
 

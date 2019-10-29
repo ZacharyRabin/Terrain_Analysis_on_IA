@@ -90,6 +90,7 @@ public:
 
     ivect VT(itype center, bool &is_border);
     vector<Edge> VE(itype center);
+    vector<Edge*> VE_p(itype center);
     ivect VV(itype center);
 
     ivect ET(Edge &e);
@@ -326,6 +327,65 @@ template<class V> vector<Edge> Mesh<V>::VE(itype center)
         else if(tri.TT((k+2)%3) == pred)
         {
             edges.push_back(tri.TE((k+1)%3));
+            pred = current;
+            current = tri.TT((k+1)%3);
+        }
+    }
+
+    return edges;
+}
+
+template<class V> vector<Edge*> Mesh<V>::VE_p(itype center)
+{
+    vector<Edge*> edges;
+
+    itype pred = -1;
+    itype current = this->get_vertex(center).get_VTstar();
+
+    itype k = this->get_triangle(current).vertex_index(center);
+
+    edges.push_back(this->get_triangle(current).TE_p((k+1)%3));
+
+    //scelgo un giro a caso da prendere
+    pred = current;
+    current = this->get_triangle(current).TT((k+1)%3);
+
+    bool is_border = false;
+
+    while(current != this->get_vertex(center).get_VTstar())
+    {
+        if(current == -1) // border
+        {
+            if(is_border) // if it is the second time that I get to a border I exit
+                break;
+            else
+            {
+                // otherwise I hit a triangle on the border for the first time
+                // then, I visit in the opposite direction starting again from VTstar
+                is_border = true;
+                pred = this->get_vertex(center).get_VTstar();
+                Triangle &tri = this->get_triangle(pred);
+                k = tri.vertex_index(center);
+                //
+                edges.push_back(tri.TE_p((k+2)%3));
+                current = tri.TT((k+2)%3);
+                if(current==-1) // no need visit the star in the opposite direction
+                    break;
+            }
+        }
+
+        Triangle &tri = this->get_triangle(current);
+        k = tri.vertex_index(center);
+
+        if(tri.TT((k+1)%3) == pred)
+        {
+            edges.push_back(tri.TE_p((k+2)%3));
+            pred = current;
+            current = tri.TT((k+2)%3);
+        }
+        else if(tri.TT((k+2)%3) == pred)
+        {
+            edges.push_back(tri.TE_p((k+1)%3));
             pred = current;
             current = tri.TT((k+1)%3);
         }

@@ -152,6 +152,14 @@ public:
             this->coords[i] /= c;
         return *this;
     }
+    inline bool operator< (const Vertex&p)const{
+         for(int i=0; i<this->get_dimension(); i++){
+             if(this->coords[i] !=p.coords[i])
+                 return this->coords[i]<p.coords[i];
+         }
+         
+        return false;
+    }
 
     inline int get_dimension() const { return coords.size(); }
     // no range check!
@@ -166,6 +174,11 @@ public:
      * @return the field value
      */
     inline coord_type get_field(int pos) { return fields[pos]; }
+    /**
+     * @brief A public procedure returning the number of field values encoded in the vertex
+     * @return the number of field value
+     */
+    inline void set_field(int pos,coord_type f) { fields[pos]=f; }
     /**
      * @brief A public procedure returning the number of field values encoded in the vertex
      * @return the number of field value

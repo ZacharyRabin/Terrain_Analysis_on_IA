@@ -8,6 +8,7 @@ set(INCLUDE_DIRS
 		terrain_features
 		roughness
 		gradient
+		morse
 	)
 	
 INCLUDE_DIRECTORIES( ${INCLUDE_DIRS} )
@@ -32,11 +33,17 @@ file(GLOB GRADIENT_SRC
         gradient/*.cpp
     ) 
 
+file(GLOB MORSE_SRC
+        morse/*.h
+        morse/*.cpp
+    ) 
+
 set(ALL_SRC
         ${CURVATURE_SRC}
         ${TERRAIN_FEATURES_SRC}
 	${ROUGHNESS_SRC}
 	${GRADIENT_SRC}
+	${MORSE_SRC}
 	)
 	
 add_library(_terrain_analysis ${ALL_SRC})

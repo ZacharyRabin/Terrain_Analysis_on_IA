@@ -2,8 +2,8 @@
 
 vector<int> FormanGradientVector::descending_2cells_extraction(bool with_geometry){
 
-    vector<int> labeling = vector<int>(mesh->getTopSimplexesNum(),-1);
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    vector<int> labeling = vector<int>(mesh->get_triangles_num(),-1);
+    for(int i=0; i<mesh->get_triangles_num(); i++){
 
         if(is_face_critical(i)){
 
@@ -13,7 +13,7 @@ vector<int> FormanGradientVector::descending_2cells_extraction(bool with_geometr
             vector<int> simplexi;
             int v=-1;
             for(int j=0; j<3; j++){
-                    simplexi.push_back(mesh->getTopSimplex(i).TV(j));
+                    simplexi.push_back(mesh->get_triangle(i).TV(j));
 
             }
 
@@ -34,7 +34,7 @@ vector<int> FormanGradientVector::descending_2cells_extraction(bool with_geometr
                     labeling[tri]=i;
 
                     for(int j=0; j<3; j++){
-                        Edge* new_e = mesh->getTopSimplex(tri).TE(j);
+                        Edge* new_e = mesh->get_triangle(tri).TE_p(j);
                         if(*new_e != *edge){
                             coda.push(new_e);
                         }
@@ -63,18 +63,18 @@ void FormanGradientVector::descending_1cells_extraction(bool with_geometry){
     set<pair<int, bool> > critici;
     set<pair<int,int> > edges;
 
-    vector<bool> visited = vector<bool>(mesh->getTopSimplexesNum(),false);
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    vector<bool> visited = vector<bool>(mesh->get_triangles_num(),false);
+    for(int i=0; i<mesh->get_triangles_num(); i++){
         visited[i]=true;
         for(int j=0; j<3; j++){
-            if(mesh->getTopSimplex(i).TT(j) == -1 || !visited[mesh->getTopSimplex(i).TT(j)]){
+            if(mesh->get_triangle(i).TT(j) == -1 || !visited[mesh->get_triangle(i).TT(j)]){
 
-                Edge* edge = mesh->getTopSimplex(i).TE(j);
+                Edge* edge = mesh->get_triangle(i).TE_p(j);
                 if(is_edge_critical(edge->EV(0), edge->EV(1))){
 
 
                     if(with_geometry){
-                        mesh->getVertex(edge->EV(0)).getZ() > mesh->getVertex(edge->EV(1)).getZ() ? edges.insert(pair<int,int>(edge->EV(0),edge->EV(1))) : edges.insert(pair<int,int>(edge->EV(1),edge->EV(0)));
+                        mesh->get_vertex(edge->EV(0)).get_c(2) > mesh->get_vertex(edge->EV(1)).get_c(2) ? edges.insert(pair<int,int>(edge->EV(0),edge->EV(1))) : edges.insert(pair<int,int>(edge->EV(1),edge->EV(0)));
                         vertici.insert(edge->EV(0));
                         vertici.insert(edge->EV(1));
                     }
@@ -91,7 +91,7 @@ void FormanGradientVector::descending_1cells_extraction(bool with_geometry){
                         edge = getVE(vert);
                         if(edge != NULL){
                             if(with_geometry){
-                                mesh->getVertex(edge->EV(0)).getZ() > mesh->getVertex(edge->EV(1)).getZ() ? edges.insert(pair<int,int>(edge->EV(0),edge->EV(1))) : edges.insert(pair<int,int>(edge->EV(1),edge->EV(0)));
+                                mesh->get_vertex(edge->EV(0)).get_c(2) > mesh->get_vertex(edge->EV(1)).get_c(2) ? edges.insert(pair<int,int>(edge->EV(0),edge->EV(1))) : edges.insert(pair<int,int>(edge->EV(1),edge->EV(0)));
                                 vertici.insert(edge->EV(0));
                                 vertici.insert(edge->EV(1));
                             }
@@ -101,6 +101,7 @@ void FormanGradientVector::descending_1cells_extraction(bool with_geometry){
                         }
                     }
                 }
+                else delete edge;
             }
         }
     }
@@ -113,17 +114,17 @@ void FormanGradientVector::descending_1cells_extraction(bool with_geometry){
 vector<int> FormanGradientVector::ascending_2cells_extraction(bool with_geometry){
 
     queue<int> coda;
-    vector<int> label = vector<int>(mesh->getNumVertex(), -1);
+    vector<int> label = vector<int>(mesh->get_vertices_num(), -1);
 
     int critical_edge =0;
     int minima=0;
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         if(is_vertex_critical(i)){
             minima++;
             label[i]=i;
 
-            vector<Edge*> ve = mesh->VE(i);
+            vector<Edge*> ve = mesh->VE_p(i);
             for(unsigned int j=0; j<ve.size(); j++){
                 int v2 = ve[j]->EV(0) == i ? ve[j]->EV(1) : ve[j]->EV(0);
                 Edge* edge = getVE(v2);
@@ -142,7 +143,7 @@ vector<int> FormanGradientVector::ascending_2cells_extraction(bool with_geometry
                 coda.pop();
                 label[v]=i;
 
-                ve = mesh->VE(v);
+                ve = mesh->VE_p(v);
                 for(unsigned int j=0; j<ve.size(); j++){
                     int v2 = ve[j]->EV(0) == v ? ve[j]->EV(1) : ve[j]->EV(0);
                     Edge* edge = getVE(v2);
@@ -166,23 +167,35 @@ vector<int> FormanGradientVector::ascending_2cells_extraction(bool with_geometry
 
 void FormanGradientVector::ascending_1cells_extraction(bool with_geometry){
 
-
-    vector<bool> visited = vector<bool>(mesh->getTopSimplexesNum(),false);
+    vector<bool> visited = vector<bool>(mesh->get_triangles_num(),false);
     map<int,int> visited_triangle;
-    set<pair<Vertex3D,Vertex3D> > edges;
+    set<pair<Vertex,Vertex> > edges;
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    for(int i=0; i<mesh->get_triangles_num(); i++){
         visited[i]=true;
         for(int j=0; j<3; j++){
-            if(mesh->getTopSimplex(i).TT(j) == -1 || !visited[mesh->getTopSimplex(i).TT(j)]){
+            if(mesh->get_triangle(i).TT(j) == -1 || !visited[mesh->get_triangle(i).TT(j)]){
 
                 queue<int> coda;
-                Edge* edge = mesh->getTopSimplex(i).TE(j);
-                if(is_edge_critical(edge->EV(0), edge->EV(1))){
+                Edge* edge = mesh->get_triangle(i).TE_p(j);
+                if(is_edge_critical(edge->EV(0), edge->EV(1)))
+                {
 
                     vector<int> et = mesh->ET(*edge);
                     for(int j=0; j<et.size(); j++){
                         coda.push(et[j]);
+
+                        Vertex v1 = mesh->get_vertex(mesh->get_triangle(et[j]).TV(0));
+                        v1 += mesh->get_vertex(mesh->get_triangle(et[j]).TV(1));
+                        v1 += mesh->get_vertex(mesh->get_triangle(et[j]).TV(2));
+                        v1 /= 3.0;
+
+                        Vertex ve = mesh->get_vertex(edge->EV(0));
+                        ve += mesh->get_vertex(edge->EV(1));
+                        ve /= 2.0;
+                        if(with_geometry){
+                            edges.insert(pair<Vertex,Vertex>(v1,ve));
+                        }
                     }
 
                     while(!coda.empty()){
@@ -198,35 +211,34 @@ void FormanGradientVector::ascending_1cells_extraction(bool with_geometry){
                         else{
                             int e = getFE(t);
 
-                            int t_adj = mesh->getTopSimplex(t).TT(e);
+                            int t_adj = mesh->get_triangle(t).TT(e);
                             if(t_adj != -1){
                                 coda.push(t_adj);
 
+                                if(with_geometry){
+                                    Vertex v1 = mesh->get_vertex(mesh->get_triangle(t_adj).TV(0));
+                                    v1 += mesh->get_vertex(mesh->get_triangle(t_adj).TV(1));
+                                    v1 += mesh->get_vertex(mesh->get_triangle(t_adj).TV(2));
+                                    v1 /= 3.0;
 
+                                    Edge* edg = mesh->get_triangle(t).TE_p(e);
+                                    Vertex ve = mesh->get_vertex(edg->EV(0));
+                                    ve += mesh->get_vertex(edg->EV(1));
+                                    ve /= 2.0;
 
-                                Vertex3D v1 = mesh->getVertex(mesh->getTopSimplex(t_adj).TV(0));
-                                v1 += mesh->getVertex(mesh->getTopSimplex(t_adj).TV(1));
-                                v1 += mesh->getVertex(mesh->getTopSimplex(t_adj).TV(2));
-                                v1 /= 3.0;
+                                    Vertex v2 = mesh->get_vertex(mesh->get_triangle(t).TV(0));
+                                    v2 += mesh->get_vertex(mesh->get_triangle(t).TV(1));
+                                    v2 += mesh->get_vertex(mesh->get_triangle(t).TV(2));
+                                    v2 /= 3.0;
 
-                                Edge* edg = mesh->getTopSimplex(t).TE(e);
-                                Vertex3D ve = mesh->getVertex(edg->EV(0));
-                                ve += mesh->getVertex(edg->EV(1));
-                                ve /= 2.0;
-
-
-                                Vertex3D v2 = mesh->getVertex(mesh->getTopSimplex(t).TV(0));
-                                v2 += mesh->getVertex(mesh->getTopSimplex(t).TV(1));
-                                v2 += mesh->getVertex(mesh->getTopSimplex(t).TV(2));
-                                v2 /= 3.0;
-
-                                edges.insert(pair<Vertex3D,Vertex3D>(v1,ve));
-                                edges.insert(pair<Vertex3D,Vertex3D>(v2,ve));
+                                    edges.insert(pair<Vertex,Vertex>(v1,ve));
+                                    edges.insert(pair<Vertex,Vertex>(v2,ve));
+                                    }
                             }
                         }
                     }
-
                 }
+                else delete edge;
             }
         }
     }
@@ -240,12 +252,12 @@ void FormanGradientVector::ascending_1cells_extraction(bool with_geometry){
 vector<int> FormanGradientVector::count_critical_simplexes(){
     vector<int> cp(3,0);
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    for(int i=0; i<mesh->get_triangles_num(); i++){
         if(is_face_critical(i))
             cp[2]++;
     }
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         if(is_vertex_critical(i)){
             cp[0]++;
         }

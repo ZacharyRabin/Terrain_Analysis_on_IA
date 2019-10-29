@@ -6,8 +6,8 @@ void FormanGradientVector::writeVTK_1cells(char* file_name, set<int> const& vert
     int vertex_number = vertici.size();
     int edge_number = edges.size();
 
-    vector<int> new_vertex_index = vector<int>(mesh->getNumVertex(), -1);
-    vector<int> critical_index = vector<int>(mesh->getNumVertex(), -1);
+    vector<int> new_vertex_index = vector<int>(mesh->get_vertices_num(), -1);
+    vector<int> critical_index = vector<int>(mesh->get_vertices_num(), -1);
 
     FILE* file;
     file = fopen(file_name, "w");
@@ -24,9 +24,9 @@ void FormanGradientVector::writeVTK_1cells(char* file_name, set<int> const& vert
     fprintf(file, "DATASET UNSTRUCTURED_GRID\n\n");
     fprintf(file, "POINTS %d float\n", vertex_number);
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         if(new_vertex_index[i] != -1){
-            fprintf(file, "%f %f %f\n", mesh->getVertex(i).getX(), mesh->getVertex(i).getY(), mesh->getVertex(i).getZ());
+            fprintf(file, "%f %f %f\n", mesh->get_vertex(i).get_c(0), mesh->get_vertex(i).get_c(1), mesh->get_vertex(i).get_c(2));
         }
 
     }
@@ -51,9 +51,9 @@ void FormanGradientVector::writeVTK_1cells(char* file_name, set<int> const& vert
     fprintf(file, "originalField 1 %d float\n", vertex_number);
 
     int j=0;
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         if(new_vertex_index[i] != -1){
-            fprintf(file, "%f ", mesh->getVertex(i).getZ());
+            fprintf(file, "%f ", mesh->get_vertex(i).get_c(2));
          j++;
         }
     }
@@ -64,10 +64,10 @@ void FormanGradientVector::writeVTK_1cells(char* file_name, set<int> const& vert
 
 }
 
-void FormanGradientVector::writeVTK_1cells(char* file_name, set<pair<Vertex3D,Vertex3D> > const& edges){
+void FormanGradientVector::writeVTK_1cells(char* file_name, set<pair<Vertex,Vertex> > const& edges){
 
     int count=0;
-    map<Vertex3D, int> vertices;
+    map<Vertex, int> vertices;
 
     for(auto s : edges ){
         if(vertices.find(s.first) == vertices.end()){
@@ -79,7 +79,7 @@ void FormanGradientVector::writeVTK_1cells(char* file_name, set<pair<Vertex3D,Ve
         }
     }
 
-    vector<Vertex3D> sortedVertices(vertices.size());
+    vector<Vertex> sortedVertices(vertices.size());
     for(auto s : vertices){
         sortedVertices[s.second]=s.first;
     }
@@ -97,7 +97,7 @@ void FormanGradientVector::writeVTK_1cells(char* file_name, set<pair<Vertex3D,Ve
     fprintf(file, "POINTS %d float\n", vertex_number);
 
     for(auto s : sortedVertices){
-        fprintf(file, "%f %f %f\n", s.getX(), s.getY(), s.getZ());
+        fprintf(file, "%f %f %f\n", s.get_c(0), s.get_c(1), s.get_c(2));
     }
     fprintf(file, "\n\n");
 
@@ -128,40 +128,40 @@ void FormanGradientVector::writeVTK_2cells(char* nome_file_output, vector<int> t
     fprintf(file, "# vtk DataFile Version 2.0\n\n");
     fprintf(file, "ASCII \n\n");
     fprintf(file, "DATASET UNSTRUCTURED_GRID\n\n");
-    fprintf(file, "POINTS %d float\n", mesh->getNumVertex());
+    fprintf(file, "POINTS %d float\n", mesh->get_vertices_num());
 
-    for(int i=0; i<mesh->getNumVertex(); i++)
-        fprintf(file, "%f %f %f\n", mesh->getVertex(i).getX(), mesh->getVertex(i).getY(), mesh->getVertex(i).getZ());
+    for(int i=0; i<mesh->get_vertices_num(); i++)
+        fprintf(file, "%f %f %f\n", mesh->get_vertex(i).get_c(0), mesh->get_vertex(i).get_c(1), mesh->get_vertex(i).get_c(2));
     fprintf(file, "\n\n");
 
-    fprintf(file, "CELLS %d %d\n", mesh->getTopSimplexesNum(), mesh->getTopSimplexesNum()*4);
+    fprintf(file, "CELLS %d %d\n", mesh->get_triangles_num(), mesh->get_triangles_num()*4);
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++)
-        fprintf(file, "3 %d %d %d\n", mesh->getTopSimplex(i).TV(0), mesh->getTopSimplex(i).TV(1), mesh->getTopSimplex(i).TV(2));
+    for(int i=0; i<mesh->get_triangles_num(); i++)
+        fprintf(file, "3 %d %d %d\n", mesh->get_triangle(i).TV(0), mesh->get_triangle(i).TV(1), mesh->get_triangle(i).TV(2));
     fprintf(file, "\n");
 
-    fprintf(file, "CELL_TYPES %d\n", mesh->getTopSimplexesNum());
+    fprintf(file, "CELL_TYPES %d\n", mesh->get_triangles_num());
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++)
+    for(int i=0; i<mesh->get_triangles_num(); i++)
         fprintf(file, "%d ", 5);
     fprintf(file, "\n\n");
 
 
-    fprintf(file, "POINT_DATA %d \n", mesh->getNumVertex());
+    fprintf(file, "POINT_DATA %d \n", mesh->get_vertices_num());
     fprintf(file, "FIELD FieldData 1\n");
-    fprintf(file, "originalfield 1 %d float\n", mesh->getNumVertex());
+    fprintf(file, "originalfield 1 %d float\n", mesh->get_vertices_num());
 
-    for(int i=0; i<mesh->getNumVertex(); i++)
-        fprintf(file, "%f ", mesh->getVertex(i).getZ());
+    for(int i=0; i<mesh->get_vertices_num(); i++)
+        fprintf(file, "%f ", mesh->get_vertex(i).get_c(2));
 
     fprintf(file, "\n\n");
 
 
-    fprintf(file, "CELL_DATA %d \n", mesh->getTopSimplexesNum());
+    fprintf(file, "CELL_DATA %d \n", mesh->get_triangles_num());
     fprintf(file, "FIELD FieldData 1\n");
-    fprintf(file, "descending3cells 1 %d float\n", mesh->getTopSimplexesNum());
+    fprintf(file, "descending3cells 1 %d float\n", mesh->get_triangles_num());
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    for(int i=0; i<mesh->get_triangles_num(); i++){
         fprintf(file, "%d ", triangles[i]);
     }
     fprintf(file, "\n");
@@ -179,37 +179,37 @@ void FormanGradientVector::writeVTK_2cells_on_vert(char* nome_file_output, vecto
     fprintf(file, "# vtk DataFile Version 2.0\n\n");
     fprintf(file, "ASCII \n\n");
     fprintf(file, "DATASET UNSTRUCTURED_GRID\n\n");
-    fprintf(file, "POINTS %d float\n", mesh->getNumVertex());
+    fprintf(file, "POINTS %d float\n", mesh->get_vertices_num());
 
-    for(int i=0; i<mesh->getNumVertex(); i++)
-        fprintf(file, "%f %f %f\n", mesh->getVertex(i).getX(), mesh->getVertex(i).getY(), mesh->getVertex(i).getZ());
+    for(int i=0; i<mesh->get_vertices_num(); i++)
+        fprintf(file, "%f %f %f\n", mesh->get_vertex(i).get_c(0), mesh->get_vertex(i).get_c(1), mesh->get_vertex(i).get_c(2));
     fprintf(file, "\n\n");
 
-    fprintf(file, "CELLS %d %d\n", mesh->getTopSimplexesNum(), mesh->getTopSimplexesNum()*4);
+    fprintf(file, "CELLS %d %d\n", mesh->get_triangles_num(), mesh->get_triangles_num()*4);
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++)
-        fprintf(file, "3 %d %d %d\n", mesh->getTopSimplex(i).TV(0), mesh->getTopSimplex(i).TV(1), mesh->getTopSimplex(i).TV(2));
+    for(int i=0; i<mesh->get_triangles_num(); i++)
+        fprintf(file, "3 %d %d %d\n", mesh->get_triangle(i).TV(0), mesh->get_triangle(i).TV(1), mesh->get_triangle(i).TV(2));
     fprintf(file, "\n");
 
-    fprintf(file, "CELL_TYPES %d\n", mesh->getTopSimplexesNum());
+    fprintf(file, "CELL_TYPES %d\n", mesh->get_triangles_num());
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++)
+    for(int i=0; i<mesh->get_triangles_num(); i++)
         fprintf(file, "%d ", 5);
     fprintf(file, "\n\n");
 
 
-    fprintf(file, "POINT_DATA %d \n", mesh->getNumVertex());
+    fprintf(file, "POINT_DATA %d \n", mesh->get_vertices_num());
     fprintf(file, "FIELD FieldData 2\n");
-    fprintf(file, "originalfield 1 %d float\n", mesh->getNumVertex());
+    fprintf(file, "originalfield 1 %d float\n", mesh->get_vertices_num());
 
-    for(int i=0; i<mesh->getNumVertex(); i++)
-        fprintf(file, "%f ", mesh->getVertex(i).getF());
+    for(int i=0; i<mesh->get_vertices_num(); i++)
+        fprintf(file, "%f ", mesh->get_vertex(i).get_c(2));
 
     fprintf(file, "\n");
 
-    fprintf(file, "ascending 1 %d float\n", mesh->getNumVertex());
+    fprintf(file, "ascending 1 %d float\n", mesh->get_vertices_num());
 
-    for(int i=0; i<mesh->getNumVertex(); i++)
+    for(int i=0; i<mesh->get_vertices_num(); i++)
         fprintf(file, "%d ", labels[i]);
 
     fprintf(file, "\n");
@@ -220,26 +220,26 @@ void FormanGradientVector::writeVTK_2cells_on_vert(char* nome_file_output, vecto
 
 void FormanGradientVector::writeVTK_gradient(char* nomeFile){
 
-    vector<int> critical_vertexes = vector<int>(mesh->getNumVertex(),-1);
+    vector<int> critical_vertexes = vector<int>(mesh->get_vertices_num(),-1);
 
     vector<vector<float> > new_vertexes_triangles;
 
     map<pair<int,int>, vector<float> > edges;
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
-        if(edges.find(pair<int,int>(mesh->getTopSimplex(i).TV(0), mesh->getTopSimplex(i).TV(1))) == edges.end() && edges.find(pair<int,int>(mesh->getTopSimplex(i).TV(1), mesh->getTopSimplex(i).TV(0))) == edges.end())
-            edges[pair<int,int>(mesh->getTopSimplex(i).TV(0), mesh->getTopSimplex(i).TV(1))] = vector<float>();
-        if(edges.find(pair<int,int>(mesh->getTopSimplex(i).TV(1), mesh->getTopSimplex(i).TV(2))) == edges.end() && edges.find(pair<int,int>(mesh->getTopSimplex(i).TV(2), mesh->getTopSimplex(i).TV(1))) == edges.end())
-            edges[pair<int,int>(mesh->getTopSimplex(i).TV(1), mesh->getTopSimplex(i).TV(2))] = vector<float>();
-        if(edges.find(pair<int,int>(mesh->getTopSimplex(i).TV(2), mesh->getTopSimplex(i).TV(0))) == edges.end() && edges.find(pair<int,int>(mesh->getTopSimplex(i).TV(0), mesh->getTopSimplex(i).TV(2))) == edges.end())
-            edges[pair<int,int>(mesh->getTopSimplex(i).TV(2), mesh->getTopSimplex(i).TV(0))] = vector<float>();
+    for(int i=0; i<mesh->get_triangles_num(); i++){
+        if(edges.find(pair<int,int>(mesh->get_triangle(i).TV(0), mesh->get_triangle(i).TV(1))) == edges.end() && edges.find(pair<int,int>(mesh->get_triangle(i).TV(1), mesh->get_triangle(i).TV(0))) == edges.end())
+            edges[pair<int,int>(mesh->get_triangle(i).TV(0), mesh->get_triangle(i).TV(1))] = vector<float>();
+        if(edges.find(pair<int,int>(mesh->get_triangle(i).TV(1), mesh->get_triangle(i).TV(2))) == edges.end() && edges.find(pair<int,int>(mesh->get_triangle(i).TV(2), mesh->get_triangle(i).TV(1))) == edges.end())
+            edges[pair<int,int>(mesh->get_triangle(i).TV(1), mesh->get_triangle(i).TV(2))] = vector<float>();
+        if(edges.find(pair<int,int>(mesh->get_triangle(i).TV(2), mesh->get_triangle(i).TV(0))) == edges.end() && edges.find(pair<int,int>(mesh->get_triangle(i).TV(0), mesh->get_triangle(i).TV(2))) == edges.end())
+            edges[pair<int,int>(mesh->get_triangle(i).TV(2), mesh->get_triangle(i).TV(0))] = vector<float>();
     }
 
     for(map<pair<int,int>, vector<float> >::iterator it = edges.begin(); it != edges.end(); it++){
 
-        float x = (mesh->getVertex(it->first.first).getX() + mesh->getVertex(it->first.second).getX())/2.0;
-        float y = (mesh->getVertex(it->first.first).getY() + mesh->getVertex(it->first.second).getY())/2.0;
-        float z = (mesh->getVertex(it->first.first).getZ() + mesh->getVertex(it->first.second).getZ())/2.0;
+        float x = (mesh->get_vertex(it->first.first).get_c(0) + mesh->get_vertex(it->first.second).get_c(0))/2.0;
+        float y = (mesh->get_vertex(it->first.first).get_c(1) + mesh->get_vertex(it->first.second).get_c(1))/2.0;
+        float z = (mesh->get_vertex(it->first.first).get_c(2) + mesh->get_vertex(it->first.second).get_c(2))/2.0;
 
         vector<float> bar;
         bar.push_back(x);
@@ -252,11 +252,11 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
 
     vector<vector<float> > tri_baricenter;
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    for(int i=0; i<mesh->get_triangles_num(); i++){
 
-        float x = (mesh->getVertex(mesh->getTopSimplex(i).TV(0)).getX() + mesh->getVertex(mesh->getTopSimplex(i).TV(1)).getX()+ mesh->getVertex(mesh->getTopSimplex(i).TV(2)).getX())/3.0;
-        float y = (mesh->getVertex(mesh->getTopSimplex(i).TV(0)).getY() + mesh->getVertex(mesh->getTopSimplex(i).TV(1)).getY()+ mesh->getVertex(mesh->getTopSimplex(i).TV(2)).getY())/3.0;
-        float z = (mesh->getVertex(mesh->getTopSimplex(i).TV(0)).getZ() + mesh->getVertex(mesh->getTopSimplex(i).TV(1)).getZ()+ mesh->getVertex(mesh->getTopSimplex(i).TV(2)).getZ())/3.0;
+        float x = (mesh->get_vertex(mesh->get_triangle(i).TV(0)).get_c(0) + mesh->get_vertex(mesh->get_triangle(i).TV(1)).get_c(0)+ mesh->get_vertex(mesh->get_triangle(i).TV(2)).get_c(0))/3.0;
+        float y = (mesh->get_vertex(mesh->get_triangle(i).TV(0)).get_c(1) + mesh->get_vertex(mesh->get_triangle(i).TV(1)).get_c(1)+ mesh->get_vertex(mesh->get_triangle(i).TV(2)).get_c(1))/3.0;
+        float z = (mesh->get_vertex(mesh->get_triangle(i).TV(0)).get_c(2) + mesh->get_vertex(mesh->get_triangle(i).TV(1)).get_c(2)+ mesh->get_vertex(mesh->get_triangle(i).TV(2)).get_c(2))/3.0;
 
         vector<float> bar;
         bar.push_back(x);
@@ -272,7 +272,7 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
 
 
     vector<vector<float> > vectors_gradient;
-    for(int i=0; i<mesh->getNumVertex(); i++ ){
+    for(int i=0; i<mesh->get_vertices_num(); i++ ){
 
         if(is_vertex_critical(i)){
             critical_vertexes[i] = 0;
@@ -293,9 +293,9 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
 
                 vector<float> bar_edge = edges.find(pair<int,int>(edge[0], edge[1]))->second;
                 vector<float> bar_point;
-                bar_point.push_back(mesh->getVertex(i).getX());
-                bar_point.push_back(mesh->getVertex(i).getY());
-                bar_point.push_back(mesh->getVertex(i).getZ());
+                bar_point.push_back(mesh->get_vertex(i).get_c(0));
+                bar_point.push_back(mesh->get_vertex(i).get_c(1));
+                bar_point.push_back(mesh->get_vertex(i).get_c(2));
 
                 vect.push_back(bar_edge[0] - bar_point[0]);
                 vect.push_back(bar_edge[1] - bar_point[1]);
@@ -305,9 +305,9 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
 
                 vector<float> bar_edge = edges.find(pair<int,int>(edge[1], edge[0]))->second;
                 vector<float> bar_point;
-                bar_point.push_back(mesh->getVertex(i).getX());
-                bar_point.push_back(mesh->getVertex(i).getY());
-                bar_point.push_back(mesh->getVertex(i).getZ());
+                bar_point.push_back(mesh->get_vertex(i).get_c(0));
+                bar_point.push_back(mesh->get_vertex(i).get_c(1));
+                bar_point.push_back(mesh->get_vertex(i).get_c(2));
 
                 vect.push_back(bar_edge[0] - bar_point[0]);
                 vect.push_back(bar_edge[1] - bar_point[1]);
@@ -375,16 +375,16 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
     FILE* file;
     file = fopen(nomeFile, "w");
 
-    int vertex_number = mesh->getNumVertex()+new_vertexes.size()+new_vertexes_triangles.size();
-    int triangles = mesh->getTopSimplexesNum();
+    int vertex_number = mesh->get_vertices_num()+new_vertexes.size()+new_vertexes_triangles.size();
+    int triangles = mesh->get_triangles_num();
 
     fprintf(file, "# vtk DataFile Version 2.0\n\n");
     fprintf(file, "ASCII \n");
     fprintf(file, "DATASET UNSTRUCTURED_GRID\n\n");
     fprintf(file, "POINTS %d float\n", vertex_number);
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
-            fprintf(file, "%f %f %f\n", mesh->getVertex(i).getX(), mesh->getVertex(i).getY(), mesh->getVertex(i).getZ());
+    for(int i=0; i<mesh->get_vertices_num(); i++){
+            fprintf(file, "%f %f %f\n", mesh->get_vertex(i).get_c(0), mesh->get_vertex(i).get_c(1), mesh->get_vertex(i).get_c(2));
     }
     for(int i=0; i<new_vertexes.size(); i++){
         fprintf(file, "%f %f %f\n", new_vertexes[i][0], new_vertexes[i][1], new_vertexes[i][2]);
@@ -396,8 +396,8 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
 
     fprintf(file, "CELLS %d %d\n", triangles, triangles*4);
 
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
-        fprintf(file, "3 %d %d %d \n", mesh->getTopSimplex(i).TV(0), mesh->getTopSimplex(i).TV(1), mesh->getTopSimplex(i).TV(2));
+    for(int i=0; i<mesh->get_triangles_num(); i++){
+        fprintf(file, "3 %d %d %d \n", mesh->get_triangle(i).TV(0), mesh->get_triangle(i).TV(1), mesh->get_triangle(i).TV(2));
     }
     fprintf(file, "\n");
 
@@ -411,7 +411,7 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
     fprintf(file, "POINT_DATA %d \n", vertex_number);
     fprintf(file, "VECTORS vector float\n");
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         fprintf(file, "%f %f %f   ", vectors_gradient[i][0], vectors_gradient[i][1], vectors_gradient[i][2]);
     }
     for(int i=0; i<new_vectors.size(); i++){
@@ -425,7 +425,7 @@ void FormanGradientVector::writeVTK_gradient(char* nomeFile){
     fprintf(file, "FIELD FieldData 1\n");
     fprintf(file, "critical 1 %d int\n", vertex_number);
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         fprintf(file, "%d ", critical_vertexes[i]);
     }
     for(int i=0; i<from_edges.size(); i++){
@@ -458,19 +458,19 @@ void FormanGradientVector::writeVTK_criticalPoints(char* nomeFile){
     fprintf(file, "POINTS %d float\n", numC);
 
     int critCheck=0;
-    for(int i=0; i<mesh->getTopSimplexesNum(); i++){
+    for(int i=0; i<mesh->get_triangles_num(); i++){
         if(is_face_critical(i)){
-            Vertex3D v1 = mesh->getVertex(mesh->getTopSimplex(i).TV(0));
-            Vertex3D v2 = mesh->getVertex(mesh->getTopSimplex(i).TV(1));
-            Vertex3D v3 = mesh->getVertex(mesh->getTopSimplex(i).TV(2));
-            fprintf(file, "%f %f %f \n", (v1.getX()+v2.getX()+v3.getX())/3.0, (v1.getY()+v2.getY()+v3.getY())/3.0, (v1.getZ()+v2.getZ()+v3.getZ())/3.0);
+            Vertex v1 = mesh->get_vertex(mesh->get_triangle(i).TV(0));
+            Vertex v2 = mesh->get_vertex(mesh->get_triangle(i).TV(1));
+            Vertex v3 = mesh->get_vertex(mesh->get_triangle(i).TV(2));
+            fprintf(file, "%f %f %f \n", (v1.get_c(0)+v2.get_c(0)+v3.get_c(0))/3.0, (v1.get_c(1)+v2.get_c(1)+v3.get_c(1))/3.0, (v1.get_c(2)+v2.get_c(2)+v3.get_c(2))/3.0);
             types[critCheck++]=2;
         }
     }
 
-    for(int i=0; i<mesh->getNumVertex(); i++){
+    for(int i=0; i<mesh->get_vertices_num(); i++){
         if(is_vertex_critical(i)){
-            fprintf(file, "%f %f %f \n", mesh->getVertex(i).getX(), mesh->getVertex(i).getY(), mesh->getVertex(i).getZ());
+            fprintf(file, "%f %f %f \n", mesh->get_vertex(i).get_c(0), mesh->get_vertex(i).get_c(1), mesh->get_vertex(i).get_c(2));
             types[critCheck++]=0;
         }
 
@@ -478,9 +478,9 @@ void FormanGradientVector::writeVTK_criticalPoints(char* nomeFile){
         for(auto v : vv){
             if(v < i){
                 if(is_edge_critical(v,i)){
-                    Vertex3D v1 = mesh->getVertex(i);
-                    Vertex3D v2 = mesh->getVertex(v);
-                    fprintf(file, "%f %f %f \n", (v1.getX()+v2.getX())/2.0, (v1.getY()+v2.getY())/2.0, (v1.getZ()+v2.getZ())/2.0);
+                    Vertex v1 = mesh->get_vertex(i);
+                    Vertex v2 = mesh->get_vertex(v);
+                    fprintf(file, "%f %f %f \n", (v1.get_c(0)+v2.get_c(0))/2.0, (v1.get_c(1)+v2.get_c(1))/2.0, (v1.get_c(2)+v2.get_c(2))/2.0);
                     types[critCheck++]=1;
                 }
             }

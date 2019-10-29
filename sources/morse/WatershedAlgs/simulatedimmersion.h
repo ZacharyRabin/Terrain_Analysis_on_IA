@@ -1,7 +1,7 @@
 #ifndef SIMULATEDIMMERSION
 #define SIMULATEDIMMERSION
 
-#include "../LibMesh/Mesh.h"
+#include "ia/mesh.h"
 
 
 ///Watershed by simulated immersion algorithm originally described in

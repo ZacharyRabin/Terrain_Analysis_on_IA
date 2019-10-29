@@ -45,8 +45,6 @@
 #include "utilities/io.h"
 #include "utilities/timer.h"
 #include "gradient/Gradient.h"
-#include "morse/formangradientvector.h"
-//#include "morse/WatershedAlgs/simulatedimmersion.h"
 
 using namespace std;
 using namespace string_management;
@@ -212,41 +210,6 @@ int main(int argc, char *argv[])
         multi.print_stats(mesh);
         cerr << "[MEMORY] peak for computing Multi field measure: " <<
         to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
-        
-    }
-    else if(strcmp(argv[1],"morse")==0){
-        FormanGradientVector gradient= FormanGradientVector(&mesh)
-;      map<double, vector<int> > vert;
-        for(int i=0; i<mesh.get_vertices_num(); i++){
-            vert[mesh.get_vertex(i).get_c(2)].push_back(i);
-        }
-
-        int count=0;
-        for(auto m : vert){
-            for(auto v : m.second){
-                //cout<<"field num:"<<mesh.get_vertex(v).get_fields_num()<<endl;
-                mesh.get_vertex(v).add_field(count++);
-            }
-        }
-        cout << mesh.get_vertex(100).get_field(0)<<"; "<<mesh.get_vertex(59).get_field(0)<<endl;
-        time.start();
-        //compute the Forman gradient via homotopty expansion
-        gradient.homotopy_expansion();
-        time.stop();
-        time.print_elapsed_time("[TIME] Computing Forman Gradient:");
-        vector<int> cp = gradient.count_critical_simplexes();
-        int numC = cp[0] + cp[1] + cp[2];
-        cout << "Critical Points found (min sad max)" << cp[0] << " " << cp[1] << " " << cp[2] << " SUM: "<< numC << endl << endl;
-        cout<< "Extraction of critical net:"<<endl;
-        time.start();
-        gradient.descending_1cells_extraction(false);
-        gradient.ascending_1cells_extraction(false);
-
-        time.stop();
-
-  cout << endl;
-  cout << "[TIME]: " << time.get_elapsed_time() << "s, using " <<  to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MB" << endl;
-
         
     }
     else if(strcmp(argv[1],"save")==0)

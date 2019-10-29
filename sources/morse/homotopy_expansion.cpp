@@ -6,9 +6,9 @@
 
 void FormanGradientVector::homotopy_expansion(){
 
-    for(int i=0; i< mesh->getNumVertex(); i++){
-
-        vector<int> vt = mesh->VT(i);
+    for(int i=0; i< mesh->get_vertices_num(); i++){
+        bool is_border=false;
+        vector<int> vt = mesh->VT(i,is_border);
         map<vector<int>, Simplex_Graph* > lower_star = compute_lower_star(i, &vt);
 
         vector<int> v;
@@ -28,10 +28,10 @@ void FormanGradientVector::homotopy_expansion(){
 
             for(simplices_map::iterator it = gradient_vector_in_lower->begin(vector<int>(2)); it != gradient_vector_in_lower->end(vector<int>(2)); it++){
                 int v = 3;
-                v -= mesh->getTopSimplex(it->second).vertex_index(it->first[0]);
-                v -= mesh->getTopSimplex(it->second).vertex_index(it->first[1]);
+                v -= mesh->get_triangle(it->second).vertex_index(it->first[0]);
+                v -= mesh->get_triangle(it->second).vertex_index(it->first[1]);
 
-                setEF(mesh->getTopSimplex(it->second).TV(v), it->second);
+                setEF(mesh->get_triangle(it->second).TV(v), it->second);
             }
 
             delete gradient_vector_in_lower;
@@ -54,16 +54,16 @@ map<vector<int>, Simplex_Graph*> FormanGradientVector::compute_lower_star(int v,
         vector<int> simplex;
         simplex.push_back(v);
 
-        Triangle t1 = mesh->getTopSimplex(t);
+        Triangle t1 = mesh->get_triangle(t);
 
 
         for(int j=0; j<3; j++){
             int v1 = t1.TV(j);
-            if(mesh->getVertex(v).getF() > mesh->getVertex(v1).getF()){
+            if(mesh->get_vertex(v).get_field(0) > mesh->get_vertex(v1).get_field(0)){
                 simplex.push_back(v1);
             }
 
-            assert(mesh->getVertex(v).getF() != mesh->getVertex(v1).getF() || v == v1);
+            assert(mesh->get_vertex(v).get_field(0) != mesh->get_vertex(v1).get_field(0) || v == v1);
         }
         if(simplex.size() == 1) continue;
 
@@ -247,7 +247,7 @@ int FormanGradientVector::num_unpared_faces(vector<int>& co_face, ExplicitGradie
                     }
                     else{
                         for(int pos=0; pos<3; pos++){
-                            simpl.push_back(mesh->getTopSimplex(it->second).TV(pos));
+                            simpl.push_back(mesh->get_triangle(it->second).TV(pos));
                         }
                     }
                     simpl = sort_simplex(&simpl);
@@ -291,7 +291,7 @@ vector<int> FormanGradientVector::unique_pairable_face(vector<int>& s_face, Expl
                     }
                     else{
                         for(int pos=0; pos<3; pos++){
-                            simpl.push_back(mesh->getTopSimplex(it->second).TV(pos));
+                            simpl.push_back(mesh->get_triangle(it->second).TV(pos));
                         }
                     }
                     simpl = sort_simplex(&simpl);
