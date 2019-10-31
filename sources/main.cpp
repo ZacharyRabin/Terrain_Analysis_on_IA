@@ -234,9 +234,13 @@ int main(int argc, char *argv[])
         gradient.homotopy_expansion();
         time.stop();
         time.print_elapsed_time("[TIME] Computing Forman Gradient:");
+        time.start();
         vector<int> cp = gradient.count_critical_simplexes();
         int numC = cp[0] + cp[1] + cp[2];
+        time.stop();
         cout << "Critical Points found (min sad max)" << cp[0] << " " << cp[1] << " " << cp[2] << " SUM: "<< numC << endl << endl;
+        time.print_elapsed_time("[TIME] Output time:");
+        cout<<"Using " <<  to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MB" << endl;
         cout<< "Extraction of critical net:"<<endl;
         time.start();
         gradient.descending_1cells_extraction(false);
