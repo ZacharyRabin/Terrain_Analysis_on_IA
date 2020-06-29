@@ -98,11 +98,12 @@ int main(int argc, char *argv[])
 
     if(strcmp(argv[1],"concurv")==0)
     {
-        ConcentratedCurvature ccurv = ConcentratedCurvature(true,mesh);
+        ConcentratedCurvature ccurv = ConcentratedCurvature(false,mesh);
         time.start();
         ccurv.compute_values(mesh);
         time.stop();
         time.print_elapsed_time("[TIME] Computing Concentrated Curvatures: ");
+        ccurv.print_curvature_stats(mesh);
         cerr << "[MEMORY] peak for extracting the Concentrated Curvatures: " <<
                 to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
     }
@@ -185,22 +186,22 @@ int main(int argc, char *argv[])
     }
     else if(strcmp(argv[1],"gradient")==0)
     {
-       
-        Roughness roughness(mesh);// Note: Here the memory usage during roughness computation is also included. 
+
+        Roughness roughness(mesh);// Note: Here the memory usage during roughness computation is also included.
          time.start();
         roughness.compute_values(mesh);
         time.stop();
         time.print_elapsed_time("[TIME] Computing Roughness: ");
           cerr << "[MEMORY] peak for computing roughness: " <<
                 to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
-          
+
         roughness.print_stats(mesh);
         roughness.store_result(mesh);
-        
+
 
         int factor=100;
         cerr<<"number of fields: "<<mesh.get_vertex(10).get_fields_num()<<endl;
-          
+
 
         Gradient multi("All");
          time.start();
@@ -212,7 +213,7 @@ int main(int argc, char *argv[])
         multi.print_stats(mesh);
         cerr << "[MEMORY] peak for computing Multi field measure: " <<
         to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
-        
+
     }
     else if(strcmp(argv[1],"morse")==0){
         FormanGradientVector gradient= FormanGradientVector(&mesh)
@@ -251,7 +252,7 @@ int main(int argc, char *argv[])
   cout << endl;
   cout << "[TIME]: " << time.get_elapsed_time() << "s, using " <<  to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MB" << endl;
 
-        
+
     }
     else if(strcmp(argv[1],"save")==0)
     {
@@ -338,5 +339,3 @@ void print_paragraph(string stringa, int cols){
         printf("\n");
     }
 }
-
-

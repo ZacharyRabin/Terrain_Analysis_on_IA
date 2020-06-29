@@ -46,6 +46,7 @@ coord_type ConcentratedCurvature::compute(itype v, Spatial_Mesh &mesh)
         v2 = current.TV((pos+2)%current.vertices_num());
         coord_type res = Geometry_Curvature::cos_angle(mesh.get_vertex(v1),mesh.get_vertex(v),mesh.get_vertex(v2));
         totang += acos(res);
+        // cout<<"Total angle is:"<<totang<<endl;
     }
 
     if(is_border)
@@ -55,7 +56,9 @@ coord_type ConcentratedCurvature::compute(itype v, Spatial_Mesh &mesh)
 
     if (this->divide_by_area) // gaussian angle deficit
         curva /= Geometry_Curvature::voronoi_barycentric_area(v,mesh);
+
     // else concentrated curvature
+    //cout<<"curvature is:"<<curva<<endl;
 
     return curva;
 }
