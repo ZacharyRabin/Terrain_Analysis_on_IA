@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
                 mesh.get_vertex(v).add_field(count++);
             }
         }
-        cout << mesh.get_vertex(100).get_field(0)<<"; "<<mesh.get_vertex(59).get_field(0)<<endl;
+        //cout << mesh.get_vertex(100).get_field(0)<<"; "<<mesh.get_vertex(59).get_field(0)<<endl;
         time.start();
         //compute the Forman gradient via homotopty expansion
         gradient.homotopy_expansion();
