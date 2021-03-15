@@ -1,0 +1,27 @@
+Scanning dependencies of target _IA2D
+[  5%] Building CXX object sources/core_library/sources/CMakeFiles/_IA2D.dir/utilities/io.cpp.o
+[ 11%] Building CXX object sources/core_library/sources/CMakeFiles/_IA2D.dir/utilities/quad_mesh.cpp.o
+[ 17%] Building CXX object sources/core_library/sources/CMakeFiles/_IA2D.dir/utilities/string_management.cpp.o
+[ 23%] Building CXX object sources/core_library/sources/CMakeFiles/_IA2D.dir/utilities/timer.cpp.o
+[ 29%] Linking CXX static library ../lib/lib_IA2D.a
+[ 29%] Built target _IA2D
+Scanning dependencies of target _terrain_analysis
+[ 35%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/curvature/abstract_curvature.cpp.o
+[ 41%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/curvature/c_curvature.cpp.o
+[ 47%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/curvature/concentrated_curvature.cpp.o
+[ 52%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/curvature/geometry_curvature.cpp.o
+[ 58%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/curvature/mean_curvature.cpp.o
+[ 64%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/terrain_features/critical_points_extractor.cpp.o
+[ 70%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/terrain_features/geometry_slope.cpp.o
+[ 76%] Building CXX object sources/CMakeFiles/_terrain_analysis.dir/terrain_features/slope_extractor.cpp.o
+[ 82%] Linking CXX static library ../lib/lib_terrain_analysis.a
+[ 82%] Built target _terrain_analysis
+Scanning dependencies of target ia_terrain_analysis
+[ 88%] Building CXX object CMakeFiles/ia_terrain_analysis.dir/sources/main.cpp.o
+/home/ytsong/projects/Terrain_Analysis_on_IA/sources/main.cpp: In function ‘void print_help()’:
+/home/ytsong/projects/Terrain_Analysis_on_IA/sources/main.cpp:187:14: warning: ignoring return value of ‘char* fgets(char*, int, FILE*)’, declared with attribute warn_unused_result [-Wunused-result]
+         fgets(path, sizeof(path)-1, fp);
+         ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 94%] Building CXX object CMakeFiles/ia_terrain_analysis.dir/sources/topological_main.cpp.o
+[100%] Linking CXX executable bin/ia_terrain_analysis
+[100%] Built target ia_terrain_analysis

@@ -40,10 +40,10 @@ coord_type Geometry_Slope::compute_triangle_slope(Triangle &t, Spatial_Mesh &mes
     // get the magnitude of the normal
     coord_type magnitude_n = sqrt( n[0]*n[0] + n[1]*n[1] + n[2]*n[2] );
 
-    // the dot product between n and the ground normal is only formed by the normalized y component of n
-    n[1] /= magnitude_n;
+    // the dot product between n and the ground normal is only formed by the normalized z component of n
+    n[2] /= magnitude_n;
     // thus, we do not have to compute the real dot product but we use the y part of the norm
-    coord_type angle = acos(n[1]);
+    coord_type angle = acos(n[2])*180/3.14159265358979323846;
 
     return angle;
 }

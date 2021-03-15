@@ -6,6 +6,9 @@ add_subdirectory(core_library)
 set(INCLUDE_DIRS		
 		curvature
 		terrain_features
+		roughness
+		gradient
+		morse
 	)
 	
 INCLUDE_DIRECTORIES( ${INCLUDE_DIRS} )
@@ -20,9 +23,27 @@ file(GLOB TERRAIN_FEATURES_SRC
         terrain_features/*.cpp
     ) 
 
+file(GLOB ROUGHNESS_SRC
+        roughness/*.h
+        roughness/*.cpp
+    ) 
+
+file(GLOB GRADIENT_SRC
+        gradient/*.h
+        gradient/*.cpp
+    ) 
+
+file(GLOB MORSE_SRC
+        morse/*.h
+        morse/*.cpp
+    ) 
+
 set(ALL_SRC
         ${CURVATURE_SRC}
         ${TERRAIN_FEATURES_SRC}
+	${ROUGHNESS_SRC}
+	${GRADIENT_SRC}
+	${MORSE_SRC}
 	)
 	
 add_library(_terrain_analysis ${ALL_SRC})

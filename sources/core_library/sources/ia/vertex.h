@@ -26,7 +26,7 @@
 
 #include <math.h>
 #include "ia/vt_star.h"
-
+using namespace std;
 ///An inner-class, extending Vertex2D, representing a vertex in a tetrahedral mesh
 class Vertex : public VT_star
 {
@@ -34,7 +34,7 @@ public:
     ///A constructor method
     Vertex() : VT_star() {  }
     ///A constructor method
-    Vertex(const Vertex& orig) : VT_star(orig) { this->coords=orig.coords; }
+    Vertex(const Vertex& orig) : VT_star(orig) { this->coords=orig.coords; this->fields=orig.fields;}
     ///A constructor method for a 2D point
     /*!
      * \param x a coord_type argument, representing the x coordinate
@@ -48,6 +48,17 @@ public:
      * \param z a coord_type argument, representing the z coordinate
      */
     Vertex(coord_type x, coord_type y, coord_type z) : VT_star() { coords = { x, y, z }; }
+    ///A constructor method
+    /*!
+     * \param x a coord_type argument, representing the x coordinate
+     * \param y a coord_type argument, representing the y coordinate
+     * \param field a coord_type argument, representing the vertex field
+     */
+    Vertex(coord_type x, coord_type y, dvect &fields) :  VT_star() 
+    {
+        coords={x,y,fields[0]};
+        this->fields=fields;
+    }
     ///A constructor method for a nD point
     Vertex(dvect &coords) : VT_star() { this->coords = coords; }
     ///A constructor method for an unset nD point
@@ -141,6 +152,14 @@ public:
             this->coords[i] /= c;
         return *this;
     }
+    inline bool operator< (const Vertex&p)const{
+         for(int i=0; i<this->get_dimension(); i++){
+             if(this->coords[i] !=p.coords[i])
+                 return this->coords[i]<p.coords[i];
+         }
+         
+        return false;
+    }
 
     inline int get_dimension() const { return coords.size(); }
     // no range check!
@@ -148,6 +167,23 @@ public:
     // no range check!
     inline coord_type get_c(int pos) const { return this->coords[pos]; }
 
+    inline void add_field(coord_type f) { fields.push_back(f); }
+    /**
+     * @brief A public procedure that return the field value stored at a certain position
+     * @param pos an integer value, encoding the position in the fields array
+     * @return the field value
+     */
+    inline coord_type get_field(int pos) { return fields[pos]; }
+    /**
+     * @brief A public procedure returning the number of field values encoded in the vertex
+     * @return the number of field value
+     */
+    inline void set_field(int pos,coord_type f) { fields[pos]=f; }
+    /**
+     * @brief A public procedure returning the number of field values encoded in the vertex
+     * @return the number of field value
+     */
+    inline int get_fields_num() { return fields.size(); }
     //this function returns the norm of vector vec-v
     coord_type norm(Vertex& v)
     {
@@ -206,10 +242,22 @@ public:
             out << c << " ";
         return out;
     }
+    
+    
+    void set_gradientMatrix(FG gradient){this->gradientMatrix.push_back(gradient);}
+    void print_gradientMatrix(){
+        for(int i=0;i<this->gradientMatrix.size();i++)
+            cout<<"stored gradient of field "<<i<<":"<<gradientMatrix[i][0]<<", "<<gradientMatrix[i][1]<<endl;
+    
+    };
+    vect_FG& get_gradientMatrix(){return this->gradientMatrix;}
 
 private:    
     ///A protected variable representing the z coordinate of the point
     dvect coords;
+    dvect fields;
+    
+    vect_FG gradientMatrix;
 
 };
 

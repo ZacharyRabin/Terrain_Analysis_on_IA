@@ -21,6 +21,7 @@ public:
     inline itype TV(int pos) { return this->vertices[pos]; }
 
     inline Edge TE(int pos) { return Edge(vertices[(pos+1)%3],vertices[(pos+2)%3]); }
+    inline Edge* TE_p(int pos) { return  new Edge(vertices[(pos+1)%3],vertices[(pos+2)%3]); }
 
     inline itype TT(int pos) { return this->adj[pos]; }
 

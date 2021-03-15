@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="100">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="sources">
+        <df name="core_library">
+          <df name="sources">
+            <df name="utilities">
+              <in>io.cpp</in>
+              <in>quad_mesh.cpp</in>
+              <in>string_management.cpp</in>
+              <in>timer.cpp</in>
+            </df>
+          </df>
+        </df>
+        <df name="curvature">
+          <in>abstract_curvature.cpp</in>
+          <in>c_curvature.cpp</in>
+          <in>concentrated_curvature.cpp</in>
+          <in>geometry_curvature.cpp</in>
+          <in>mean_curvature.cpp</in>
+        </df>
+        <df name="gradient">
+          <in>Gradient.cpp</in>
+        </df>
+        <df name="roughness">
+          <in>Roughness.cpp</in>
+        </df>
+        <df name="terrain_features">
+          <in>critical_points_extractor.cpp</in>
+          <in>geometry_slope.cpp</in>
+          <in>slope_extractor.cpp</in>
+        </df>
+        <in>main.cpp</in>
+        <in>topological_main.cpp</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>CMakeLists.txt</itemPath>
+      <itemPath>Makefile</itemPath>
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-O3 -march=native -std=c++11 -O3"/>
+      </flagsDictionary>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <preprocessorList>
+              <Elem>NDEBUG</Elem>
+            </preprocessorList>
+          </ccTool>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand>${CMAKE} -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=${IDE_CC} -DCMAKE_CXX_COMPILER=${IDE_CXX} -DCMAKE_C_FLAGS_DEBUG="-g3 -gdwarf-2" -DCMAKE_CXX_FLAGS_DEBUG="-g3 -gdwarf-2" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON .</preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <folder path="0/sources/core_library">
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/eigen3</pElem>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library</pElem>
+            <pElem>sources/core_library/sources</pElem>
+            <pElem>sources/core_library/sources/ia</pElem>
+            <pElem>sources/core_library/sources/utilities</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/sources/curvature">
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/eigen3</pElem>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library</pElem>
+            <pElem>sources/curvature</pElem>
+            <pElem>sources/terrain_features</pElem>
+            <pElem>sources/roughness</pElem>
+            <pElem>sources/gradient</pElem>
+            <pElem>sources/core_library/sources</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/sources/gradient">
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/eigen3</pElem>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library</pElem>
+            <pElem>sources/curvature</pElem>
+            <pElem>sources/terrain_features</pElem>
+            <pElem>sources/roughness</pElem>
+            <pElem>sources/gradient</pElem>
+            <pElem>sources/core_library/sources</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/sources/roughness">
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/eigen3</pElem>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library</pElem>
+            <pElem>sources/curvature</pElem>
+            <pElem>sources/terrain_features</pElem>
+            <pElem>sources/roughness</pElem>
+            <pElem>sources/gradient</pElem>
+            <pElem>sources/core_library/sources</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="0/sources/terrain_features">
+        <ccTool>
+          <incDir>
+            <pElem>/usr/include/eigen3</pElem>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library</pElem>
+            <pElem>sources/curvature</pElem>
+            <pElem>sources/terrain_features</pElem>
+            <pElem>sources/roughness</pElem>
+            <pElem>sources/gradient</pElem>
+            <pElem>sources/core_library/sources</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="sources/core_library/sources/utilities/io.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/core_library/sources/utilities/quad_mesh.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/core_library/sources/utilities/string_management.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/core_library/sources/utilities/timer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/curvature/abstract_curvature.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/curvature/c_curvature.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/curvature/concentrated_curvature.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/curvature/geometry_curvature.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/curvature/mean_curvature.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/gradient/Gradient.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/main.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library/sources</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+      <item path="sources/roughness/Roughness.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/terrain_features/critical_points_extractor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/terrain_features/geometry_slope.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/terrain_features/slope_extractor.cpp"
+            ex="false"
+            tool="1"
+            flavor2="8">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="sources/topological_main.cpp" ex="false" tool="1" flavor2="8">
+        <ccTool flags="0">
+          <incDir>
+            <pElem>sources</pElem>
+            <pElem>sources/core_library/sources</pElem>
+            <pElem>.</pElem>
+          </incDir>
+        </ccTool>
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
