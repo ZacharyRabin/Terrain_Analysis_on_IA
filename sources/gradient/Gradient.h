@@ -52,6 +52,10 @@ public:
         fields.push_back(4);
        
        }
+       else if (mode=="rz"){
+           fields.push_back(0);
+           fields.push_back(1);
+       }
     };
     
     //Here we don't need to compute the gradient of all the triangles in the mesh. So we don't need PCE_gradient.

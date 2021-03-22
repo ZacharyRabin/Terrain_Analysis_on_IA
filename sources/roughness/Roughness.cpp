@@ -81,5 +81,5 @@ void Roughness::store_result(Spatial_Mesh& mesh){
         mesh.get_vertex(v).add_field(roughness[v]);
        
     }
-
+    
 }

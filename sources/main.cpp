@@ -186,7 +186,12 @@ int main(int argc, char *argv[])
     }
     else if(strcmp(argv[1],"gradient")==0)
     {
-
+     
+        if(mesh.get_vertex(1).get_fields_num()==0)
+          {
+              cout<<"[ERROR] input mesh should have at least one extra field for gradient computation"<<endl;
+                return 0;
+          }
         Roughness roughness(mesh);// Note: Here the memory usage during roughness computation is also included.
          time.start();
         roughness.compute_values(mesh);
@@ -204,7 +209,7 @@ int main(int argc, char *argv[])
 
 
         Gradient multi("All");
-         time.start();
+        time.start();
         multi.compute_field_stats(mesh,factor);
         multi.multi_field(mesh);
         time.stop();

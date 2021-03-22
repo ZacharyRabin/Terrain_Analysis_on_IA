@@ -20,12 +20,16 @@ In Proceedings of SIGSPATIAL’17, Los Angeles Area, CA, USA, November 7–10, 2
 + Terrain Features
     * Triangle/Edges slope computation
     * Critical Points extraction
+    * Roughness extraction
+    * Gradient computation (only when the input data is multifield data)
 + Curvature computation ([reference1](http://dl.acm.org/citation.cfm?id=1463498)and [reference2](http://www.umiacs.umd.edu/~deflo/papers/2010grapp/2010grapp.pdf))
     * Concentrated curvature
     * Mean Curvature
     * Mean and Gaussian CCurvature 
 + Dual quad mesh computation
-
++ Morphological terrain analysis 
+    * Forman gradient computation
+    * local Features extractions
 ### How to compile ###
 
 The library requires only the standard template library installed in your system.
