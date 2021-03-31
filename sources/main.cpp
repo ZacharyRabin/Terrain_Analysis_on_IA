@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
         mcurv.compute_values(mesh);
         time.stop();
         time.print_elapsed_time("[TIME] Computing Mean Curvatures: ");
+        mcurv.print_curvature_stats(mesh);
         cerr << "[MEMORY] peak for extracting the Mean Curvatures: " <<
                 to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
     }
@@ -125,6 +126,7 @@ int main(int argc, char *argv[])
         ccurv.compute_values(mesh);
         time.stop();
         time.print_elapsed_time("[TIME] Computing CCurvatures: ");
+        ccurv.print_curvature_stats(mesh);
         cerr << "[MEMORY] peak for extracting the C Curvatures: " <<
                 to_string(MemoryUsage().get_Virtual_Memory_in_MB()) << " MBs" << std::endl;
     }
