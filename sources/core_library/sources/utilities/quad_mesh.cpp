@@ -120,14 +120,14 @@ void Quad_Mesh::save_quad_mesh(string file_name)
     ofstream output(ss.str().c_str());
     output << "OFF" << endl;
     output<<this->vertices.size()<<" "<<this->quads.size()<<" 0"<<endl;
-    for(uint i=0; i<this->vertices.size(); i++)
+    for(unsigned int i=0; i<this->vertices.size(); i++)
     {
         for(int v=0; v<3; v++)
             output << this->vertices[i].get_i_coord(v) << " ";
         output << endl;
     }
 
-    for(uint i=0; i<this->quads.size(); i++)
+    for(unsigned int i=0; i<this->quads.size(); i++)
     {
         output << "4 ";
         for(int v=0; v<this->quads[i].get_num_vertices(); v++)
