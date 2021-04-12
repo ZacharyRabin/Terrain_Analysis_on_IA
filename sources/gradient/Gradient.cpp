@@ -138,7 +138,7 @@ void Gradient::multifield_compute(itype vid,Spatial_Mesh &mesh){
         EigenSolver<MatrixXd> solver;
         solver.compute(input,false);
 
-        double max = numeric_limits<double>::min();
+        double max = (numeric_limits<double>::min)();
 	for(int i=0; i<solver.eigenvalues().rows(); i++)
 	{
 		complex<double> c = solver.eigenvalues().coeff(i,0);

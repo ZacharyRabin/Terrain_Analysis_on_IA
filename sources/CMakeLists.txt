@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 include_directories(core_library)
 add_subdirectory(core_library)
@@ -47,5 +47,5 @@ set(ALL_SRC
 	)
 	
 add_library(_terrain_analysis ${ALL_SRC})
-target_link_libraries(_terrain_analysis _IA2D)
+target_link_libraries(_terrain_analysis _IA2D Eigen3::Eigen)
 
