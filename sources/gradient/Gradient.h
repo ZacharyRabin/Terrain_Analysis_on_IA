@@ -17,6 +17,7 @@
 #include "ia/mesh.h"
 #include "ia/vertex.h"
 #include "ia/triangle.h"
+
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 #include <Eigen/Eigenvalues>
@@ -110,7 +111,7 @@ private:
 
     dvect PCE_compute(itype tid, Spatial_Mesh &mesh, int field_index);
     FG vertex_compute(itype vid,Spatial_Mesh &mesh, int field_index);
-    coord_type multifield_compute(itype vid, Spatial_Mesh &mesh);
+    void multifield_compute(itype vid, Spatial_Mesh &mesh);
     coord_type block_time;
     
     

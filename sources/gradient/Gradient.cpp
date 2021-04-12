@@ -48,8 +48,8 @@ dvect Gradient::PCE_compute(itype tid, Spatial_Mesh &mesh, int field_index){
 void Gradient::multi_field(Spatial_Mesh& mesh){
  for(itype i=0; i<mesh.get_vertices_num(); i++)
     {
-        coord_type multifield;
-        multifield=multifield_compute(i,mesh);
+        //coord_type multifield;
+        /*multifield=*/multifield_compute(i,mesh);
 
     }
 
@@ -113,7 +113,7 @@ FG Gradient::vertex_compute(itype vid, Spatial_Mesh& mesh, int field_index){
 }
 
 
-coord_type Gradient::multifield_compute(itype vid,Spatial_Mesh &mesh){
+void Gradient::multifield_compute(itype vid,Spatial_Mesh &mesh){
 
       vect_FG FG_matrix;
 
