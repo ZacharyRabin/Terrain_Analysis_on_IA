@@ -32,10 +32,10 @@
 #include <queue>
 #include <cmath>
 
-#include "utilities/sorting.h"
-#include "ia/edge.h"
-#include "ia/triangle.h"
-#include "ia/vertex.h"
+#include "../utilities/sorting.h"
+#include "edge.h"
+#include "triangle.h"
+#include "vertex.h"
 
 /*
 Return true iff v is an extreme of the edge v1-v2

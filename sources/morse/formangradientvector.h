@@ -8,11 +8,11 @@
 #include <set>
 #include <list>
 #include "assert.h"
-#include "ia/mesh.h"
-#include "ia/vertex.h"
-#include "ia/triangle.h"
-#include "utilities/timer.h"
-#include "utilities/usage.h"
+#include "../core_library/sources/ia/mesh.h"
+#include "../core_library/sources/ia/vertex.h"
+#include "../core_library/sources/ia/triangle.h"
+#include "../core_library/sources/utilities/timer.h"
+#include "../core_library/sources/utilities/usage.h"
 /*#include "../LibMesh/Mesh.h"
 #include "../LibMesh/Vertex3D.h"
 

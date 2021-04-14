@@ -1,7 +1,7 @@
 #ifndef Triangle_H
 #define Triangle_H
 
-#include "ia/edge.h"
+#include "edge.h"
 
 class Triangle
 {

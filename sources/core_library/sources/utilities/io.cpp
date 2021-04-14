@@ -22,7 +22,7 @@
  */
 
 #include "io.h"
-#include "utilities/string_management.h"
+#include "string_management.h"
 
 bool IO::read_mesh(Spatial_Mesh &mesh, string path)
 {

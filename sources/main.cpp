@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <fstream>
 
-#include "ia/mesh.h"
+#include "core_library/sources/ia/mesh.h"
 #include "curvature/mean_curvature.h"
 #include "curvature/concentrated_curvature.h"
 #include "curvature/c_curvature.h"
@@ -39,11 +39,11 @@
 
 #include "topological_main.cpp"
 
-#include "utilities/quad_mesh.h"
-#include "utilities/string_management.h"
-#include "utilities/usage.h"
-#include "utilities/io.h"
-#include "utilities/timer.h"
+#include "core_library/sources/utilities/quad_mesh.h"
+#include "core_library/sources/utilities/string_management.h"
+#include "core_library/sources/utilities/usage.h"
+#include "core_library/sources/utilities/io.h"
+#include "core_library/sources/utilities/timer.h"
 #include "gradient/Gradient.h"
 #include "morse/formangradientvector.h"
 //#include "morse/WatershedAlgs/simulatedimmersion.h"

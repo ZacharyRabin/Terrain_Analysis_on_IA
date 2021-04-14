@@ -14,15 +14,15 @@
 #ifndef GRADIENT_H
 #define GRADIENT_H
 
-#include "ia/mesh.h"
-#include "ia/vertex.h"
-#include "ia/triangle.h"
-#include <Eigen/Dense>
-#include <Eigen/SVD>
-#include <Eigen/Eigenvalues>
+#include "core_library/sources/ia/mesh.h"
+#include "core_library/sources/ia/vertex.h"
+#include "core_library/sources/ia/triangle.h"
+#include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/SVD>
+#include <eigen3/Eigen/Eigenvalues>
 #include <complex>
 #include <limits>
-#include "utilities/timer.h"
+#include "core_library/sources/utilities/timer.h"
 
 using namespace Eigen;
 

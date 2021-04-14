@@ -26,9 +26,9 @@
 
 #include <map>
 
-#include "ia/mesh.h"
-#include "utilities/usage.h"
-#include "utilities/timer.h"
+#include "core_library/sources/ia/mesh.h"
+#include "core_library/sources/utilities/usage.h"
+#include "core_library/sources/utilities/timer.h"
 
 template<class M> void VT_ALL(M& mesh);
 template<class M> void ALL(M& mesh);

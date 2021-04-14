@@ -24,8 +24,8 @@
 #ifndef GEOMETRY_SLOPE_H
 #define GEOMETRY_SLOPE_H
 
-#include "utilities/basic_wrappers.h"
-#include "ia/mesh.h"
+#include "core_library/sources/utilities/basic_wrappers.h"
+#include "core_library/sources/ia/mesh.h"
 
 class Geometry_Slope
 {

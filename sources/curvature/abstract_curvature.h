@@ -25,9 +25,9 @@
 #ifndef ABSTRACT_CURVATURE_H
 #define ABSTRACT_CURVATURE_H
 
-#include "ia/mesh.h"
-#include "ia/vertex.h"
-#include "ia/triangle.h"
+#include "core_library/sources/ia/mesh.h"
+#include "core_library/sources/ia/vertex.h"
+#include "core_library/sources/ia/triangle.h"
 
 class AbstractCurvature
 {

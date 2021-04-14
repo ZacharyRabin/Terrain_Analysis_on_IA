@@ -26,8 +26,8 @@
 
 #include <map>
 
-#include "ia/mesh.h"
-#include "utilities/basic_wrappers.h"
+#include "core_library/sources/ia/mesh.h"
+#include "core_library/sources/utilities/basic_wrappers.h"
 
 // the key corresponds to the field value of the flat area
 // the value correspond to the vertices and triangles belonging to the flat area

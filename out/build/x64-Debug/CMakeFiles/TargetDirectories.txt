@@ -1,0 +1,11 @@
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/CMakeFiles/ia_terrain_analysis.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/CMakeFiles/_terrain_analysis.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/CMakeFiles/edit_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/CMakeFiles/rebuild_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/core_library/CMakeFiles/edit_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/core_library/CMakeFiles/rebuild_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/core_library/sources/CMakeFiles/_IA2D.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/core_library/sources/CMakeFiles/edit_cache.dir
+C:/Users/Owner/source/repos/Terrain_Analysis_on_IA/out/build/x64-Debug/sources/core_library/sources/CMakeFiles/rebuild_cache.dir

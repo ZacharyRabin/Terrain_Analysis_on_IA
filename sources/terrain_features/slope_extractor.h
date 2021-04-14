@@ -25,8 +25,8 @@
 #define SLOPE_EXTRACTOR_H
 
 #include <climits>
-#include "terrain_features/geometry_slope.h"
-#include "ia/mesh.h"
+#include "geometry_slope.h"
+#include "core_library/sources/ia/mesh.h"
 
 class Slope_Extractor
 {

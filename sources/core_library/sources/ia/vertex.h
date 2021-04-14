@@ -25,7 +25,7 @@
 #define	_VERTEX_H
 
 #include <math.h>
-#include "ia/vt_star.h"
+#include "vt_star.h"
 using namespace std;
 ///An inner-class, extending Vertex2D, representing a vertex in a tetrahedral mesh
 class Vertex : public VT_star
