@@ -14,15 +14,16 @@
 #ifndef GRADIENT_H
 #define GRADIENT_H
 
-#include "core_library/sources/ia/mesh.h"
-#include "core_library/sources/ia/vertex.h"
-#include "core_library/sources/ia/triangle.h"
-#include <eigen3/Eigen/Dense>
-#include <eigen3/Eigen/SVD>
-#include <eigen3/Eigen/Eigenvalues>
+#include "ia/mesh.h"
+#include "ia/vertex.h"
+#include "ia/triangle.h"
+
+#include <Eigen/Dense>
+#include <Eigen/SVD>
+#include <Eigen/Eigenvalues>
 #include <complex>
 #include <limits>
-#include "core_library/sources/utilities/timer.h"
+#include "utilities/timer.h"
 
 using namespace Eigen;
 
@@ -110,7 +111,7 @@ private:
 
     dvect PCE_compute(itype tid, Spatial_Mesh &mesh, int field_index);
     FG vertex_compute(itype vid,Spatial_Mesh &mesh, int field_index);
-    coord_type multifield_compute(itype vid, Spatial_Mesh &mesh);
+    void multifield_compute(itype vid, Spatial_Mesh &mesh);
     coord_type block_time;
     
     

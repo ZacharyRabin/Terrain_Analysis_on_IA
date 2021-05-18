@@ -24,8 +24,12 @@
 #ifndef USAGE_H
 #define USAGE_H
 
+#ifdef _WIN32   // Windows system specific
+#include <windows.h>
+#else          // Unix based system specific
 #include <sys/types.h>
 #include <sys/resource.h>
+#endif
 
 #include <cstdlib>
 #include <cstdio>
@@ -42,8 +46,10 @@ class MemoryUsage
 {
 
 private:
+#ifndef _WIN32
     int who = RUSAGE_SELF;
     struct rusage usage;
+#endif
     int ret;
 
 public:
@@ -54,11 +60,13 @@ public:
      */
     inline float get_Resident_Memory_in_KB(bool print=false)
     {
+#ifndef _WIN32
          ret=getrusage(who,&usage);
+#endif
 #ifdef __APPLE__
          if(print) cout << "Memory Usage: " << usage.ru_maxrss/(1024.0) << " KB" << endl;
          return usage.ru_maxrss/(1024.0);
-#else
+#elif __linux__
          if(print) cout << "Memory Usage: " << usage.ru_maxrss << " KB" << endl;
          return usage.ru_maxrss;
 #endif
@@ -70,11 +78,13 @@ public:
      */
     inline float get_Resident_Memory_in_MB(bool print=false)
     {
+#ifndef _WIN32
          ret=getrusage(who,&usage);
+#endif
 #ifdef __APPLE__
          if(print) cout << "Memory Usage: " << usage.ru_maxrss/(1024.0*1024.0) << " MB" << endl;
          return usage.ru_maxrss/(1024.0*1024.0);
-#else
+#elif __linux__
          if(print) cout << "Memory Usage: " << usage.ru_maxrss/(1024.0) << " MB" << endl;
          return usage.ru_maxrss/(1024.0);
 #endif
@@ -86,11 +96,13 @@ public:
      */
     inline float get_Resident_Memory_in_GB(bool print=false)
     {
+#ifndef _WIN32
          ret=getrusage(who,&usage);
+#endif
 #ifdef __APPLE__
          if(print) cout << "Memory Usage: " << usage.ru_maxrss/(1024.0*1024.0*1024.0) << " GB" << endl;
          return usage.ru_maxrss/(1024.0*1024.0*1024.0);
-#else
+#elif __linux__
          if(print) cout << "Memory Usage: " << usage.ru_maxrss/(1024.0*1024.0) << " GB" << endl;
          return usage.ru_maxrss/(1024.0*1024.0);
 #endif
@@ -111,7 +123,7 @@ public:
 #ifdef __APPLE__
         // to fix
         return this->get_Resident_Memory_in_KB(false);
-#else
+#elif __linux__
         //Note: this value is in KB!
         FILE* file = fopen("/proc/self/status", "r");
         float result = 0;
@@ -133,6 +145,8 @@ public:
         }
         fclose(file);
         return result;
+#elif _WIN32
+        return 0; /// TO-DO: IMPLEMENT this on windows!
 #endif
     }
 
@@ -147,7 +161,7 @@ public:
 #ifdef __APPLE__
         // to fix
         return this->get_Resident_Memory_in_MB(false);
-#else
+#else 
         return get_Virtual_Memory_in_KB()/(1024.0);
 #endif
     }
@@ -163,7 +177,7 @@ public:
 #ifdef __APPLE__
         // to fix
         return this->get_Resident_Memory_in_GB(false);
-#else
+#else 
         return get_Virtual_Memory_in_KB()/(1024.0*1024.0);
 #endif
     }

@@ -280,7 +280,11 @@ void print_help(){
     char path[1035];
 
     int cols;
+#ifdef _WIN32
+    fp = _popen("tput cols", "r");
+#else
     fp = popen("tput cols", "r");
+#endif
     if(fp != NULL){
         fgets(path, sizeof(path)-1, fp);
         cols = atoi(path);
