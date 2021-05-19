@@ -32,10 +32,10 @@
 #include <iostream>
 #include <fstream>
 
-#include "../ia/vt_star.h"
-#include "../ia/vertex.h"
-#include "../ia/mesh.h"
-#include "../ia/triangle.h"
+#include "ia/vt_star.h"
+#include "ia/vertex.h"
+#include "ia/mesh.h"
+#include "ia/triangle.h"
 
 using namespace std;
 ///A class that handles the input/output to initialize the main library structures

@@ -18,9 +18,18 @@
 #include "ia/vertex.h"
 #include "ia/triangle.h"
 
+#ifdef _WIN32   // Windows system specific
 #include <Eigen/Dense>
 #include <Eigen/SVD>
 #include <Eigen/Eigenvalues>
+#else          // Unix based system specific
+#include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/SVD>
+#include <eigen3/Eigen/Eigenvalues>
+#endif
+
+
+
 #include <complex>
 #include <limits>
 #include "utilities/timer.h"

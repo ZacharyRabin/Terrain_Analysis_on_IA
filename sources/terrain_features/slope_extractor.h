@@ -26,7 +26,7 @@
 
 #include <climits>
 #include "geometry_slope.h"
-#include "core_library/sources/ia/mesh.h"
+#include "ia/mesh.h"
 
 class Slope_Extractor
 {

@@ -7,7 +7,10 @@
             "main.cpp"
         ],
         "include_dirs": [
-            "."
+            ".",
+            "..",
+            "../core_library/sources",
+            "core_library/sources/"
         ],
         "language": "c++",
         "name": "PythonMain",
@@ -28,9 +31,6 @@
             "morse/forman_feature.cpp",
             "morse/homotopy_expansion.cpp",
             "morse/morse_io.cpp",
-            "remote/main.cpp",
-            "remote/topological_main.cpp",
-            "remote/gradient/Gradient.cpp",
             "roughness/Roughness.cpp",
             "terrain_features/critical_points_extractor.cpp",
             "terrain_features/geometry_slope.cpp",

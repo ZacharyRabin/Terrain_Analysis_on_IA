@@ -25,8 +25,8 @@
 #ifndef GEOMETRY_CURVATURE_H
 #define GEOMETRY_CURVATURE_H
 
-#include "core_library/sources/utilities/basic_wrappers.h"
-#include "core_library/sources/ia/mesh.h"
+#include "utilities/basic_wrappers.h"
+#include "ia/mesh.h"
 
 #define TOLER (0.3e-6)
 #define SMALL_TOLER (0.3e-10)

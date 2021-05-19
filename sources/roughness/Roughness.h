@@ -14,9 +14,9 @@
 #ifndef ROUGHNESS_H
 #define ROUGHNESS_H
 
-#include "core_library/sources/ia/mesh.h"
-#include "core_library/sources/ia/vertex.h"
-#include "core_library/sources/ia/triangle.h"
+#include "ia/mesh.h"
+#include "ia/vertex.h"
+#include "ia/triangle.h"
 
 class Roughness {
 public:

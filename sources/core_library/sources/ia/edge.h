@@ -25,7 +25,7 @@
 #define EDGE_H
 
 #include <algorithm>
-#include "../utilities/basic_wrappers.h"
+#include "utilities/basic_wrappers.h"
 
 class Edge
 {

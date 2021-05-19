@@ -32,7 +32,7 @@
 #include <queue>
 #include <cmath>
 
-#include "../utilities/sorting.h"
+#include "utilities/sorting.h"
 #include "edge.h"
 #include "triangle.h"
 #include "vertex.h"

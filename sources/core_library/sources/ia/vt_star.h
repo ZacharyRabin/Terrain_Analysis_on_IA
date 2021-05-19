@@ -24,7 +24,7 @@
 #ifndef VT_STAR_H
 #define VT_STAR_H
 
-#include "../utilities/basic_wrappers.h"
+#include "utilities/basic_wrappers.h"
 
 class VT_star
 {
