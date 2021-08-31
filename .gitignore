@@ -1,3 +1,4 @@
+/.vs/*.*
 /lib/*.*
 /build/
 /dist/*.*
@@ -25,3 +26,5 @@ Makefile
 /sources/CMakeFiles/*
 /bin/
 /lib/
+/out/build/x64-Debug/
+/sources/build/
